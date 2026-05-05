@@ -9,16 +9,19 @@
     * { box-sizing: border-box; }
 
     :root {
-      --bg: #030712;
-      --panel: rgba(255,255,255,0.08);
-      --line: rgba(255,255,255,0.16);
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.72);
-      --cyan: #22d3ee;
-      --pink: #f472b6;
-      --yellow: #fde047;
+      --bg: #f5fbff;
+      --panel: rgba(255,255,255,0.88);
+      --line: rgba(37,99,235,0.14);
+      --text: #102033;
+      --muted: rgba(15,23,42,0.66);
+      --cyan: #38bdf8;
+      --blue: #2563eb;
+      --soft-blue: #dff4ff;
+      --pink: #fb7185;
+      --yellow: #facc15;
       --orange: #fb923c;
-      --green: #4ade80;
+      --green: #22c55e;
+      --purple: #8b5cf6;
     }
 
     body {
@@ -28,10 +31,10 @@
       min-height: 100vh;
       overflow-x: hidden;
       background:
-        radial-gradient(circle at 10% 5%, rgba(34,211,238,0.35), transparent 32%),
-        radial-gradient(circle at 90% 20%, rgba(244,114,182,0.28), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(251,146,60,0.20), transparent 34%),
-        linear-gradient(180deg, #07111f 0%, #030712 58%, #020617 100%);
+        radial-gradient(circle at 8% 10%, rgba(56,189,248,0.28), transparent 28%),
+        radial-gradient(circle at 94% 18%, rgba(250,204,21,0.26), transparent 24%),
+        radial-gradient(circle at 50% 95%, rgba(251,113,133,0.16), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #f0f9ff 45%, #e0f2fe 100%);
     }
 
     body::before {
@@ -40,27 +43,24 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 75%);
+        linear-gradient(rgba(37,99,235,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.055) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 82%);
       z-index: -2;
     }
 
     body::after {
       content: "";
       position: fixed;
-      inset: 0;
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      bottom: -120px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56,189,248,0.22), transparent 66%);
       pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.035) 0,
-        rgba(255,255,255,0.035) 1px,
-        transparent 1px,
-        transparent 5px
-      );
-      opacity: 0.25;
-      z-index: 20;
+      z-index: -1;
     }
 
     @keyframes fadeUp {
@@ -83,9 +83,16 @@
       to { transform: translateX(-50%); }
     }
 
-    .page {
-      animation: fadeUp 0.45s ease both;
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
     }
+
+    .page { animation: fadeUp 0.45s ease both; }
+    .shake { animation: shake 0.28s ease both; }
 
     #home {
       min-height: 100vh;
@@ -99,11 +106,11 @@
       justify-content: space-between;
       align-items: center;
       gap: 18px;
-      background: rgba(255,255,255,0.055);
-      border: 1px solid var(--line);
-      border-radius: 999px;
+      background: rgba(255,255,255,0.82);
+      border: 2px solid rgba(37,99,235,0.12);
+      border-radius: 26px;
       padding: 12px 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+      box-shadow: 0 18px 45px rgba(37,99,235,0.10);
       backdrop-filter: blur(16px);
     }
 
@@ -117,20 +124,44 @@
     }
 
     .brand-mark {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       display: grid;
       place-items: center;
-      border-radius: 13px;
-      color: #04111c;
-      background: linear-gradient(135deg, var(--cyan), var(--yellow));
-      box-shadow: 0 0 28px rgba(34,211,238,0.4);
+      border-radius: 14px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      box-shadow: 0 8px 0 rgba(37,99,235,0.20), 0 16px 32px rgba(37,99,235,0.18);
     }
 
-    .topbar span:last-child {
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .topbar span.tagline {
       color: var(--muted);
       font-size: 14px;
+      font-weight: 700;
     }
+
+    .mini-btn {
+      border: 2px solid rgba(37,99,235,0.14);
+      background: #ffffff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 5px 0 rgba(37,99,235,0.14);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .mini-btn:hover { transform: translateY(-2px); background: #eff6ff; box-shadow: 0 7px 0 rgba(37,99,235,0.14); }
+    .mini-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(37,99,235,0.14); }
 
     header {
       text-align: center;
@@ -142,21 +173,22 @@
       margin: 0;
       font-size: clamp(72px, 16vw, 168px);
       line-height: 0.82;
-      letter-spacing: 7px;
+      letter-spacing: 5px;
       font-weight: 1000;
       text-transform: uppercase;
-      background: linear-gradient(90deg, #fff, #67e8f9, #fff, #f9a8d4, #fff);
+      color: #0f172a;
+      background: linear-gradient(90deg, #0f172a, #2563eb, #06b6d4, #8b5cf6, #0f172a);
       background-size: 220% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 4s linear infinite;
-      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.45));
+      animation: shimmer 5s linear infinite;
+      filter: drop-shadow(0 8px 0 rgba(37,99,235,0.10));
     }
 
     header p {
       margin: 22px auto 0;
-      max-width: 660px;
+      max-width: 680px;
       font-size: clamp(17px, 3vw, 24px);
       color: var(--muted);
       line-height: 1.45;
@@ -166,9 +198,10 @@
       width: min(1180px, 100%);
       margin: 0 auto 34px;
       overflow: hidden;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.28);
+      border-radius: 999px;
+      border: 2px solid rgba(37,99,235,0.12);
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 14px 40px rgba(37,99,235,0.08);
     }
 
     .ticker {
@@ -177,10 +210,10 @@
       gap: 34px;
       padding: 12px 0;
       animation: ticker 22s linear infinite;
-      color: rgba(255,255,255,0.82);
+      color: rgba(15,23,42,0.68);
       font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 2px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
@@ -198,21 +231,20 @@
       position: relative;
       overflow: hidden;
       min-height: 340px;
-      border: 1px solid rgba(255,255,255,0.22);
+      border: 3px solid rgba(15,23,42,0.08);
       border-radius: 34px;
       padding: 28px;
       cursor: pointer;
-      color: #fff;
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 30px 90px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.2);
-      backdrop-filter: blur(18px);
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      color: #102033;
+      background: #ffffff;
+      box-shadow: 0 12px 0 rgba(15,23,42,0.07), 0 24px 55px rgba(37,99,235,0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .card:hover {
-      transform: translateY(-10px) scale(1.018);
-      box-shadow: 0 44px 110px rgba(0,0,0,0.44), 0 0 45px rgba(34,211,238,0.12);
-      border-color: rgba(255,255,255,0.46);
+      transform: translateY(-9px) rotate(-0.5deg);
+      box-shadow: 0 18px 0 rgba(15,23,42,0.07), 0 38px 75px rgba(37,99,235,0.16);
+      border-color: rgba(37,99,235,0.22);
     }
 
     .card::before {
@@ -240,20 +272,20 @@
 
     .sky-card::before {
       background:
-        radial-gradient(circle at 35% 18%, rgba(255,255,255,0.55), transparent 16%),
-        linear-gradient(145deg, #0891b2, #2563eb 55%, #312e81);
+        radial-gradient(circle at 28% 18%, rgba(255,255,255,0.78), transparent 18%),
+        linear-gradient(145deg, #dff4ff, #7dd3fc 55%, #38bdf8);
     }
 
     .block-card::before {
       background:
-        radial-gradient(circle at 25% 20%, rgba(255,255,255,0.46), transparent 18%),
-        linear-gradient(145deg, #f97316, #db2777 52%, #7c3aed);
+        radial-gradient(circle at 25% 20%, rgba(255,255,255,0.72), transparent 18%),
+        linear-gradient(145deg, #fff7ed, #fed7aa 45%, #93c5fd);
     }
 
     .coming-card::before {
       background:
-        radial-gradient(circle at 25% 20%, rgba(255,255,255,0.32), transparent 18%),
-        linear-gradient(145deg, #14b8a6, #4338ca 55%, #111827);
+        radial-gradient(circle at 25% 20%, rgba(255,255,255,0.72), transparent 18%),
+        linear-gradient(145deg, #f5f3ff, #ddd6fe 55%, #bfdbfe);
     }
 
     .card-icon {
@@ -263,9 +295,9 @@
       place-items: center;
       margin: 4px auto 22px;
       border-radius: 32px;
-      background: rgba(255,255,255,0.20);
-      border: 1px solid rgba(255,255,255,0.28);
-      box-shadow: inset 0 2px 0 rgba(255,255,255,0.28), 0 20px 45px rgba(0,0,0,0.24);
+      background: rgba(255,255,255,0.82);
+      border: 3px solid rgba(15,23,42,0.08);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.8), 0 9px 0 rgba(15,23,42,0.08), 0 18px 35px rgba(37,99,235,0.10);
       animation: float 3.3s ease-in-out infinite;
     }
 
@@ -279,9 +311,10 @@
     .card p {
       margin: 0 auto;
       text-align: center;
-      color: rgba(255,255,255,0.86);
+      color: rgba(15,23,42,0.68);
       line-height: 1.55;
       max-width: 310px;
+      font-weight: 650;
     }
 
     .logo-word {
@@ -304,11 +337,13 @@
       margin: 22px auto 0;
       border-radius: 999px;
       padding: 11px 20px;
-      background: rgba(0,0,0,0.26);
-      border: 1px solid rgba(255,255,255,0.24);
+      background: #ffffff;
+      color: #1d4ed8;
+      border: 2px solid rgba(37,99,235,0.15);
+      box-shadow: 0 5px 0 rgba(37,99,235,0.16);
       font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
+      font-weight: 1000;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
     }
 
@@ -329,46 +364,51 @@
     }
 
     .side-panel {
-      border: 1px solid var(--line);
+      border: 2px solid rgba(37,99,235,0.12);
       border-radius: 28px;
       padding: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.055));
-      box-shadow: 0 28px 80px rgba(0,0,0,0.28);
+      color: #102033;
+      background: rgba(255,255,255,0.84);
+      box-shadow: 0 12px 0 rgba(15,23,42,0.06), 0 28px 70px rgba(37,99,235,0.12);
       backdrop-filter: blur(18px);
     }
 
     .side-panel h2 { margin: 0 0 10px; font-size: 25px; }
-    .side-panel p { margin: 8px 0; color: var(--muted); line-height: 1.6; }
+    .side-panel p { margin: 8px 0; color: rgba(15,23,42,0.66); line-height: 1.6; font-weight: 650; }
 
-    .back-site {
+    .back-site, .pause-btn {
       width: 100%;
       border: 0;
       border-radius: 17px;
       padding: 14px 18px;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       cursor: pointer;
-      color: #03101a;
-      background: linear-gradient(135deg, #67e8f9, #fde047);
+      color: #ffffff;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
       font-size: 15px;
       font-weight: 1000;
-      box-shadow: 0 7px 0 rgba(3,7,18,0.45), 0 20px 42px rgba(0,0,0,0.22);
+      box-shadow: 0 7px 0 rgba(37,99,235,0.22), 0 20px 42px rgba(37,99,235,0.16);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .back-site:hover { transform: translateY(-2px); }
-    .back-site:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(3,7,18,0.45); }
+    .pause-btn {
+      background: linear-gradient(135deg, #8b5cf6, #fb7185);
+    }
+
+    .back-site:hover, .pause-btn:hover { transform: translateY(-2px); }
+    .back-site:active, .pause-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(3,7,18,0.45); }
 
     .stats-box {
       margin-top: 15px;
       padding: 14px;
       border-radius: 18px;
-      background: rgba(0,0,0,0.24);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(239,246,255,0.82);
+      border: 2px solid rgba(37,99,235,0.10);
     }
 
     .stats-box h3 {
       margin: 0 0 8px;
-      color: rgba(255,255,255,0.58);
+      color: rgba(37,99,235,0.72);
       font-size: 12px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -388,17 +428,135 @@
       background: #0f172a;
       touch-action: none;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 0 0 7px rgba(255,255,255,0.055),
-        0 36px 100px rgba(0,0,0,0.62),
-        0 0 60px rgba(34,211,238,0.10);
+        0 0 0 3px rgba(255,255,255,0.95),
+        0 0 0 8px rgba(37,99,235,0.10),
+        0 18px 0 rgba(15,23,42,0.10),
+        0 36px 85px rgba(37,99,235,0.18);
     }
 
     footer {
       margin-top: 38px;
       text-align: center;
-      color: rgba(255,255,255,0.48);
+      color: rgba(15,23,42,0.46);
       font-size: 13px;
+      font-weight: 700;
+    }
+
+    .pixel-logo {
+      font-family: Impact, 'Arial Black', system-ui, sans-serif;
+      font-weight: 1000;
+      text-align: center;
+      line-height: 0.78;
+      font-size: 31px;
+      color: #fff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      -webkit-text-stroke: 2px rgba(44,30,50,0.95);
+      text-shadow:
+        4px 0 #3d2b45,
+        -4px 0 #3d2b45,
+        0 4px #3d2b45,
+        4px 5px 0 rgba(0,0,0,0.32);
+    }
+
+    .pixel-logo small {
+      display: block;
+      color: #fef08a;
+      font-size: 22px;
+      margin-top: 6px;
+    }
+
+    .block-logo-art {
+      width: 92px;
+      height: 92px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+      transform: rotate(-2deg);
+      filter: drop-shadow(5px 7px 0 rgba(0,0,0,0.28));
+    }
+
+    .block-logo-art span {
+      border-radius: 7px;
+      box-shadow:
+        inset 0 5px 0 rgba(255,255,255,0.35),
+        inset 0 -5px 0 rgba(0,0,0,0.18),
+        0 3px 0 rgba(0,0,0,0.22);
+    }
+
+    .b-red { background: linear-gradient(#fb7185, #dc2626); }
+    .b-yellow { background: linear-gradient(#fde047, #f59e0b); }
+    .b-green { background: linear-gradient(#86efac, #16a34a); }
+    .b-blue { background: linear-gradient(#60a5fa, #2563eb); }
+    .b-purple { background: linear-gradient(#c084fc, #7c3aed); }
+
+    .quick-panel {
+      width: min(1180px, 100%);
+      margin: 0 auto 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .quick-card {
+      border: 2px solid rgba(37,99,235,0.10);
+      border-radius: 22px;
+      padding: 16px;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 0 rgba(15,23,42,0.045), 0 18px 45px rgba(37,99,235,0.08);
+    }
+
+    .quick-card strong { display: block; margin-bottom: 5px; }
+    .quick-card span { color: rgba(15,23,42,0.62); font-size: 14px; line-height: 1.35; font-weight: 650; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      place-items: center;
+      padding: 20px;
+      background: rgba(240,249,255,0.78);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-box {
+      width: min(480px, 100%);
+      border: 3px solid rgba(37,99,235,0.14);
+      border-radius: 30px;
+      padding: 24px;
+      color: #102033;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 14px 0 rgba(15,23,42,0.06), 0 40px 90px rgba(37,99,235,0.16);
+    }
+
+    .modal-box h2 { margin: 0 0 12px; }
+    .modal-box input {
+      width: 100%;
+      border: 2px solid rgba(37,99,235,0.16);
+      border-radius: 17px;
+      padding: 14px;
+      background: #ffffff;
+      color: #102033;
+      font-size: 16px;
+      outline: none;
+      box-shadow: inset 0 2px 0 rgba(37,99,235,0.04);
+    }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions button { flex: 1; }
+
+    .intro-box {
+      text-align: left;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .name-glow {
+      color: #2563eb;
+      text-shadow: 0 0 18px rgba(37,99,235,0.18);
+      font-weight: 900;
     }
 
     @media (max-width: 960px) {
@@ -407,6 +565,7 @@
       .side-panel:last-child { display: none; }
       canvas { width: min(400px, 100%); height: auto; aspect-ratio: 2/3; }
       .topbar { border-radius: 22px; align-items: flex-start; flex-direction: column; }
+      .toolbar { justify-content: flex-start; }
     }
 
     @media (max-width: 560px) {
@@ -422,31 +581,48 @@
   <div id="home" class="page">
     <div class="topbar">
       <div class="brand-pill"><span class="brand-mark">T</span><span>Temido Arcade</span></div>
-      <span>Tap. Play. Beat your best.</span>
+      <div class="toolbar">
+        <span class="tagline">Tap. Play. Beat your best.</span>
+        <span class="tagline" id="welcomeName">Welcome</span>
+        <button class="mini-btn" onclick="changeUser()" id="changeUserBtn">✏️ Change User</button>
+        <button class="mini-btn" onclick="toggleSound()" id="soundBtn">🔊 Sound On</button>
+      </div>
     </div>
 
     <header>
       <h1>Temido</h1>
-      <p>A slick mini-game arcade with fast games, glowing scores and one-more-go energy.</p>
+      <p>A slick mini-game arcade with music, sound effects, saved best scores and one-more-go energy.</p>
     </header>
 
     <div class="ticker-wrap">
       <div class="ticker">
-        <span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ New best scores</span><span>★ Touch controls</span><span>★ Keyboard ready</span>
-        <span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ New best scores</span><span>★ Touch controls</span><span>★ Keyboard ready</span>
+        <span>★ Welcome back</span><span>★ Music mode</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Smooth controls</span>
+        <span>★ Welcome back</span><span>★ Music mode</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Smooth controls</span>
       </div>
+    </div>
+
+    <div class="quick-panel">
+      <div class="quick-card"><strong id="sessionGreeting">👋 Ready?</strong><span>Your username is saved on this device.</span></div>
+      <div class="quick-card"><strong>🔥 Best scores</strong><span>Temido remembers your best score for each game.</span></div>
+      <div class="quick-card"><strong>🎧 Arcade feel</strong><span>Music, sound effects, pause and smooth touch controls.</span></div>
     </div>
 
     <div class="games">
       <div class="card sky-card" onclick="openSkyBounce()">
-        <div class="card-icon"><div class="logo-word">SKY<small>BOUNCE</small></div></div>
+        <div class="card-icon"><div class="pixel-logo">SKY<small>BOUNCE</small></div></div>
         <h2>Sky Bounce</h2>
         <p>Tap to fly, dodge glowing pipes, and chase a massive score.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
 
       <div class="card block-card" onclick="openBlockRush()">
-        <div class="card-icon"><div class="logo-word">BLOCK<small>RUSH</small></div></div>
+        <div class="card-icon">
+          <div class="block-logo-art" aria-label="Block Rush logo">
+            <span class="b-red"></span><span class="b-red"></span><span class="b-yellow"></span>
+            <span class="b-green"></span><span class="b-yellow"></span><span class="b-yellow"></span>
+            <span class="b-green"></span><span class="b-blue"></span><span class="b-blue"></span>
+          </div>
+        </div>
         <h2>Block Rush</h2>
         <p>Preview your placement, tap again to confirm, clear lines and build combos.</p>
         <span class="play-badge">▶ Play Now</span>
@@ -463,10 +639,24 @@
     <footer>© 2026 Temido — Built for fun</footer>
   </div>
 
+  <div class="modal" id="userGate">
+    <div class="modal-box intro-box">
+      <div class="brand-pill" style="margin-bottom:16px;"><span class="brand-mark">T</span><span>Temido Arcade</span></div>
+      <h2>Choose your username</h2>
+      <p style="color:rgba(15,23,42,0.66);line-height:1.5;font-weight:650;">This will be saved on this device so Temido can welcome you back.</p>
+      <input id="usernameInput" maxlength="18" placeholder="Type your username" onkeydown="if(event.key==='Enter') saveUsername()" />
+      <div class="modal-actions">
+        <button class="mini-btn" onclick="saveUsername()">Enter Temido</button>
+      </div>
+      <p style="color:rgba(15,23,42,0.46);font-size:12px;margin-top:14px;font-weight:700;">No account needed. It only saves in this browser.</p>
+    </div>
+  </div>
+
   <div id="skyGame" class="game-screen page">
     <div class="game-layout">
       <div class="side-panel">
         <button class="back-site" onclick="backToHome()">← Back to Games</button>
+        <button class="pause-btn" onclick="togglePause()" id="skyPauseBtn">⏸ Pause</button>
         <h2>🐦 Sky Bounce</h2>
         <p>Tap or press <strong>Space</strong> to bounce. Choose Easy or Hard on the game screen.</p>
         <div class="stats-box">
@@ -475,7 +665,7 @@
         </div>
       </div>
 
-      <div class="game-wrap">
+      <div class="game-wrap" id="skyWrap">
         <canvas id="skyCanvas" width="400" height="600"></canvas>
       </div>
 
@@ -494,6 +684,7 @@
     <div class="game-layout">
       <div class="side-panel">
         <button class="back-site" onclick="backToHome()">← Back to Games</button>
+        <button class="pause-btn" onclick="togglePause()" id="blockPauseBtn">⏸ Pause</button>
         <h2>🧱 Block Rush</h2>
         <p>Select a piece, tap the board to preview a shadow, then tap the same spot again to confirm.</p>
         <div class="stats-box">
@@ -502,7 +693,7 @@
         </div>
       </div>
 
-      <div class="game-wrap">
+      <div class="game-wrap" id="blockWrap">
         <canvas id="blockCanvas" width="400" height="600"></canvas>
       </div>
 
@@ -518,6 +709,153 @@
   </div>
 
 <script>
+/* SITE + AUDIO */
+let soundOn = localStorage.getItem("temidoSound") !== "off";
+let audioCtx = null;
+let musicTimer = null;
+let musicStep = 0;
+let paused = false;
+let playerName = localStorage.getItem("temidoUsername") || "";
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  if (soundOn) startMusic();
+}
+
+function tone(freq, duration = 0.1, type = "sine", volume = 0.05, slideTo = null) {
+  if (!soundOn || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, now);
+  if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, now + duration);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(volume, now + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(now);
+  osc.stop(now + duration + 0.02);
+}
+
+function noise(duration = 0.12, volume = 0.04) {
+  if (!soundOn || !audioCtx) return;
+  const bufferSize = audioCtx.sampleRate * duration;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const src = audioCtx.createBufferSource();
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+  src.buffer = buffer;
+  src.connect(gain);
+  gain.connect(audioCtx.destination);
+  src.start();
+}
+
+const sfx = {
+  click() { tone(520, 0.055, "triangle", 0.035); },
+  start() { tone(420, 0.08, "triangle", 0.045); setTimeout(() => tone(740, 0.12, "triangle", 0.045), 70); },
+  jump() { tone(520, 0.08, "sine", 0.04, 760); },
+  score() { tone(760, 0.07, "square", 0.028); setTimeout(() => tone(1060, 0.08, "triangle", 0.035), 55); },
+  best() { [660, 880, 1100, 1320].forEach((n, i) => setTimeout(() => tone(n, 0.08, "triangle", 0.04), i * 70)); },
+  crash() { noise(0.18, 0.06); tone(180, 0.18, "sawtooth", 0.04, 60); },
+  place() { tone(260, 0.05, "square", 0.03); setTimeout(() => tone(420, 0.06, "triangle", 0.03), 45); },
+  preview() { tone(620, 0.035, "triangle", 0.025); },
+  clear() { [620, 740, 880].forEach((n, i) => setTimeout(() => tone(n, 0.07, "triangle", 0.04), i * 55)); },
+  error() { tone(180, 0.08, "sawtooth", 0.035); }
+};
+
+function startMusic() {
+  if (!soundOn || !audioCtx || musicTimer) return;
+  const notes = [196, 0, 247, 0, 294, 0, 247, 0, 220, 0, 262, 0, 330, 0, 262, 0];
+  musicTimer = setInterval(() => {
+    if (!soundOn || paused) return;
+    const note = notes[musicStep % notes.length];
+    if (note) tone(note, 0.16, "sine", 0.012);
+    if (musicStep % 4 === 0) tone(note ? note / 2 : 98, 0.18, "triangle", 0.009);
+    musicStep++;
+  }, 180);
+}
+
+function stopMusic() {
+  if (musicTimer) clearInterval(musicTimer);
+  musicTimer = null;
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  localStorage.setItem("temidoSound", soundOn ? "on" : "off");
+  updateSoundButton();
+  if (soundOn) { initAudio(); sfx.start(); }
+  else stopMusic();
+}
+
+function updateSoundButton() {
+  const btn = document.getElementById("soundBtn");
+  if (btn) btn.textContent = soundOn ? "🔊 Sound On" : "🔇 Sound Off";
+  const welcome = document.getElementById("welcomeName");
+  if (welcome) welcome.innerHTML = playerName ? `Welcome, <span class="name-glow">${escapeHtml(playerName)}</span>` : "Welcome";
+  const greet = document.getElementById("sessionGreeting");
+  if (greet) greet.textContent = playerName ? `👋 Ready, ${playerName}?` : "👋 Ready?";
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+}
+
+function showUserGate(force = false) {
+  if (!playerName || force) {
+    const gate = document.getElementById("userGate");
+    gate.style.display = "grid";
+    setTimeout(() => document.getElementById("usernameInput").focus(), 80);
+  }
+}
+
+function saveUsername() {
+  const input = document.getElementById("usernameInput");
+  const val = input.value.trim();
+  if (!val) {
+    input.placeholder = "Please type a username first";
+    sfx.error();
+    return;
+  }
+  playerName = val;
+  localStorage.setItem("temidoUsername", playerName);
+  document.getElementById("userGate").style.display = "none";
+  updateSoundButton();
+  initAudio();
+  sfx.start();
+}
+
+function changeUser() {
+  document.getElementById("usernameInput").value = playerName;
+  showUserGate(true);
+}
+
+
+function vibrate(ms = 25) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+function screenShake(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove("shake");
+  void el.offsetWidth;
+  el.classList.add("shake");
+}
+
+function togglePause() {
+  paused = !paused;
+  sfx.click();
+  document.getElementById("skyPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+  document.getElementById("blockPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+}
+
 function hideAll() {
   document.getElementById("home").style.display = "none";
   document.getElementById("skyGame").style.display = "none";
@@ -525,26 +863,32 @@ function hideAll() {
 }
 
 function backToHome() {
+  initAudio(); sfx.click();
   hideAll();
   document.getElementById("home").style.display = "block";
   skyActive = false;
   blockActive = false;
+  paused = false;
 }
 
 function openSkyBounce() {
+  initAudio(); sfx.start();
   hideAll();
   document.getElementById("skyGame").style.display = "block";
   skyActive = true;
   blockActive = false;
+  paused = false;
   skyStarted = false;
   resetSky();
 }
 
 function openBlockRush() {
+  initAudio(); sfx.start();
   hideAll();
   document.getElementById("blockGame").style.display = "block";
   blockActive = true;
   skyActive = false;
+  paused = false;
   initBlockRush();
 }
 
@@ -574,6 +918,7 @@ let bird, pipes, skyScore, skyGameOver, skyFrame;
 let particles = [];
 let scorePop = 0;
 let newBestFlash = 0;
+let skySavedGameOver = false;
 
 let bestEasy = Number(localStorage.getItem("temidoSkyBestEasy")) || 0;
 let bestHard = Number(localStorage.getItem("temidoSkyBestHard")) || 0;
@@ -593,6 +938,7 @@ function resetSky() {
   particles = [];
   skyScore = 0;
   skyGameOver = false;
+  skySavedGameOver = false;
   skyFrame = 0;
   scorePop = 0;
   newBestFlash = 0;
@@ -605,11 +951,13 @@ function saveSkyBest() {
     bestEasy = skyScore;
     newBestFlash = 80;
     localStorage.setItem("temidoSkyBestEasy", bestEasy);
+    sfx.best();
   }
   if (skyMode === "hard" && skyScore > bestHard) {
     bestHard = skyScore;
     newBestFlash = 80;
     localStorage.setItem("temidoSkyBestHard", bestHard);
+    sfx.best();
   }
 }
 
@@ -819,6 +1167,7 @@ function drawParticles() {
 }
 
 function updateSky() {
+  if (paused) return;
   skyFrame++;
   bird.velocity += bird.gravity;
   if (bird.velocity > 8.2) bird.velocity = 8.2;
@@ -831,20 +1180,30 @@ function updateSky() {
     p.x -= skyMode === "hard" ? 3.35 : 2.55;
     if (!p.passed && p.x + p.width < bird.x) {
       skyScore++;
+      sfx.score();
       scorePop = 16;
       p.passed = true;
       addParticle(bird.x, bird.y);
     }
     const hit = bird.x + bird.size / 2.65 > p.x && bird.x - bird.size / 2.65 < p.x + p.width &&
       (bird.y - bird.size / 2.75 < p.top || bird.y + bird.size / 2.75 > p.top + p.gap);
-    if (hit) { skyGameOver = true; saveSkyBest(); }
+    if (hit) endSkyGame();
   });
 
   pipes = pipes.filter(p => p.x + p.width > -25);
-  if (bird.y > 620 || bird.y < -20) { skyGameOver = true; saveSkyBest(); }
+  if (bird.y > 620 || bird.y < -20) endSkyGame();
   updateParticles();
   if (scorePop > 0) scorePop--;
   if (newBestFlash > 0) newBestFlash--;
+}
+
+function endSkyGame() {
+  if (skyGameOver) return;
+  skyGameOver = true;
+  screenShake("skyWrap");
+  vibrate(80);
+  sfx.crash();
+  saveSkyBest();
 }
 
 function drawSkyScore() {
@@ -864,8 +1223,19 @@ function drawSkyScore() {
   sctx.fillText(newBestFlash > 0 ? "NEW BEST!" : "Best: " + skyBest(), 200, 69);
 }
 
+function drawPaused(ctx) {
+  ctx.fillStyle = "rgba(0,0,0,0.58)";
+  ctx.fillRect(0, 0, 400, 600);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#fff";
+  ctx.font = "1000 50px Inter, Segoe UI, system-ui";
+  ctx.fillText("Paused", 200, 292);
+  ctx.font = "16px Inter, Segoe UI, system-ui";
+  ctx.fillStyle = "rgba(255,255,255,0.72)";
+  ctx.fillText("Press Resume to continue", 200, 326);
+}
+
 function drawSkyOver() {
-  saveSkyBest();
   sctx.fillStyle = "rgba(0,0,0,0.82)";
   sctx.fillRect(0, 0, 400, 600);
   sctx.textAlign = "center";
@@ -889,34 +1259,41 @@ function drawSkyOver() {
 
 function skyTap(e) {
   e.preventDefault();
+  initAudio();
   if (!skyActive) return;
   const rect = skyCanvas.getBoundingClientRect();
   const scaleY = 600 / rect.height;
   const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top) * scaleY;
 
+  if (paused) return;
+
   if (!skyStarted) {
-    if (y > 320 && y < 378) { skyMode = "easy"; skyStarted = true; resetSky(); }
-    else if (y > 394 && y < 452) { skyMode = "hard"; skyStarted = true; resetSky(); }
+    if (y > 320 && y < 378) { skyMode = "easy"; skyStarted = true; resetSky(); sfx.start(); }
+    else if (y > 394 && y < 452) { skyMode = "hard"; skyStarted = true; resetSky(); sfx.start(); }
     return;
   }
 
   if (skyGameOver) {
-    if (y > 382 && y < 437) resetSky();
-    else if (y > 452 && y < 507) { skyStarted = false; skyGameOver = false; }
+    if (y > 382 && y < 437) { resetSky(); sfx.start(); }
+    else if (y > 452 && y < 507) { skyStarted = false; skyGameOver = false; sfx.click(); }
     return;
   }
 
   bird.velocity = bird.jump;
   bird.flap = 10;
+  sfx.jump();
+  vibrate(12);
 }
 
 skyCanvas.addEventListener("click", skyTap);
 skyCanvas.addEventListener("touchstart", skyTap, { passive: false });
 
 document.addEventListener("keydown", e => {
-  if (skyActive && skyStarted && !skyGameOver && e.code === "Space") {
+  if (skyActive && skyStarted && !skyGameOver && !paused && e.code === "Space") {
     e.preventDefault();
+    initAudio();
     bird.velocity = bird.jump;
+    sfx.jump();
   }
 });
 
@@ -964,11 +1341,8 @@ function initBlockRush() {
 
 function randomPiece() {
   const colorSet = blockColors[Math.floor(Math.random() * blockColors.length)];
-  return {
-    shape: JSON.parse(JSON.stringify(shapes[Math.floor(Math.random() * shapes.length)])),
-    color: colorSet,
-    used: false
-  };
+  const shape = JSON.parse(JSON.stringify(shapes[Math.floor(Math.random() * shapes.length)]));
+  return { shape, color: colorSet, used: false };
 }
 
 function drawBlockRush() {
@@ -983,11 +1357,12 @@ function drawBlockRush() {
   drawBRHud();
   drawBRGrid();
   drawBRPieces();
-  updateClearParticles();
+  if (!paused) updateClearParticles();
   drawClearParticles();
 
-  if (brMessageTimer > 0) brMessageTimer--;
+  if (!paused && brMessageTimer > 0) brMessageTimer--;
   if (brGameOver) drawBROver();
+  if (paused) drawPaused(bctx);
 }
 
 function drawBlockLogo() {
@@ -1069,11 +1444,8 @@ function drawGhostPiece(piece, gx, gy) {
       const nx = gx + x, ny = gy + y;
       if (nx < 0 || nx >= 8 || ny < 0 || ny >= 8) continue;
       const px = startX + nx * cell, py = startY + ny * cell;
-      if (valid) {
-        bctx.globalAlpha = 0.48;
-        drawBlockCell(px, py, cell - gap, cell - gap, piece.color, 0.48);
-        bctx.globalAlpha = 1;
-      } else {
+      if (valid) drawBlockCell(px, py, cell - gap, cell - gap, piece.color, 0.48);
+      else {
         bctx.fillStyle = "rgba(239,68,68,0.38)";
         round(bctx, px, py, cell - gap, cell - gap, 9); bctx.fill();
       }
@@ -1095,7 +1467,9 @@ function drawBRPieces() {
     bctx.strokeStyle = selected ? "#fde047" : p.used ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.20)";
     bctx.lineWidth = selected ? 3 : 2;
     round(bctx, boxX, boxY, boxW, boxH, 19); bctx.fill(); round(bctx, boxX, boxY, boxW, boxH, 19); bctx.stroke();
-    if (!p.used) drawMiniShape(p.shape, p.color, boxX + boxW / 2, boxY + boxH / 2);
+    if (!p.used) {
+      drawMiniShape(p.shape, p.color, boxX + boxW / 2, boxY + boxH / 2);
+    }
   }
 }
 
@@ -1135,8 +1509,11 @@ function placePiece(piece, gx, gy) {
     }
   }
   brScore += blocks;
+  sfx.place();
+  vibrate(18);
   const cleared = clearLines();
   if (cleared > 0) {
+    sfx.clear();
     brCombo++;
     brScore += cleared * 50 * brCombo;
     brMessage = brCombo >= 3 ? "🔥 COMBO x" + brCombo + "!" : "✨ Combo x" + brCombo;
@@ -1210,10 +1587,14 @@ function checkNewPieces() {
     previewCell = null;
     brMessage = "New pieces!";
     brMessageTimer = 45;
+    sfx.start();
   }
   if (!hasMoves()) {
     brGameOver = true;
     previewCell = null;
+    screenShake("blockWrap");
+    vibrate(80);
+    sfx.crash();
   }
 }
 
@@ -1232,13 +1613,14 @@ function getGridFromPointer(x, y) {
 
 function blockTap(e) {
   e.preventDefault();
-  if (!blockActive) return;
+  initAudio();
+  if (!blockActive || paused) return;
   const rect = blockCanvas.getBoundingClientRect();
   const sx = 400 / rect.width, sy = 600 / rect.height;
   const x = ((e.touches ? e.touches[0].clientX : e.clientX) - rect.left) * sx;
   const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top) * sy;
 
-  if (brGameOver) { initBlockRush(); return; }
+  if (brGameOver) { initBlockRush(); sfx.start(); return; }
 
   if (y > 495 && y < 585) {
     const index = Math.floor((x - 20) / 126);
@@ -1247,6 +1629,7 @@ function blockTap(e) {
       previewCell = null;
       brMessage = selectedPiece === null ? "Pick a piece" : "Tap grid to preview";
       brMessageTimer = 50;
+      sfx.click();
     }
     return;
   }
@@ -1254,6 +1637,7 @@ function blockTap(e) {
   if (selectedPiece === null) {
     brMessage = "Pick a piece first";
     brMessageTimer = 40;
+    sfx.error();
     return;
   }
 
@@ -1267,6 +1651,7 @@ function blockTap(e) {
     previewCell = { x: gx, y: gy };
     brMessage = "❌ Can't place there";
     brMessageTimer = 45;
+    sfx.error();
     return;
   }
 
@@ -1274,6 +1659,7 @@ function blockTap(e) {
     previewCell = { x: gx, y: gy };
     brMessage = "Shadow ready — tap again";
     brMessageTimer = 55;
+    sfx.preview();
     return;
   }
 
@@ -1323,12 +1709,15 @@ function loop() {
       drawSkyScore();
       if (!skyGameOver) updateSky();
       else drawSkyOver();
+      if (paused) drawPaused(sctx);
     }
   }
   if (blockActive) drawBlockRush();
   requestAnimationFrame(loop);
 }
 
+updateSoundButton();
+showUserGate();
 resetSky();
 loop();
 </script>
