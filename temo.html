@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Infin Play</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: white;
+      background: radial-gradient(ellipse at top, #0ea5e9 0%, #1e3a8a 35%, #020617 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #home {
+      min-height: 100vh;
+      padding: 40px 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 30px 10px rgba(255,255,255,0.1); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: clamp(52px, 12vw, 100px);
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #fff 0%, #a5f3fc 25%, #fff 50%, #7dd3fc 75%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      text-shadow: none;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    }
+
+    header p {
+      font-size: 22px;
+      opacity: 0.9;
+      margin-top: 8px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      max-width: 1150px;
+      margin: auto;
+    }
+
+    .card {
+      border-radius: 28px;
+      padding: 28px;
+      min-height: 300px;
+      cursor: pointer;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.25);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(8px);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: 0.6s;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 35px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    .card:active {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .sky-card {
+      background: linear-gradient(145deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%);
+    }
+
+    .block-card {
+      background: linear-gradient(145deg, #fbbf24 0%, #f97316 50%, #c2410c 100%);
+    }
+
+    .coming-card {
+      background: linear-gradient(145deg, #8b5cf6 0%, #7c3aed 50%, #5b21b6 100%);
+    }
+
+    .card-icon {
+      width: 100px;
+      height: 100px;
+      margin: 10px auto 20px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .sky-card .card-icon { animation-delay: 0s; }
+    .block-card .card-icon { animation-delay: 0.5s; }
+    .coming-card .card-icon { animation-delay: 1s; }
+
+    .sky-logo .sky,
+    .sky-logo .bounce {
+      display: block;
+      font-weight: 900;
+      line-height: 0.85;
+    }
+
+    .sky-logo .sky {
+      font-size: 28px;
+      color: white;
+      text-shadow: 2px 3px 0 rgba(0,0,0,0.3);
+    }
+
+    .sky-logo .bounce {
+      font-size: 22px;
+      color: #fef08a;
+      text-shadow: 2px 3px 0 rgba(0,0,0,0.3);
+    }
+
+    .block-logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      text-shadow: 2px 3px 0 rgba(0,0,0,0.3);
+      line-height: 0.85;
+    }
+
+    .rocket-icon {
+      font-size: 48px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+
+    .card h2 {
+      font-size: 26px;
+      margin: 18px 0 10px;
+      font-weight: 700;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    .card p {
+      font-size: 15px;
+      opacity: 0.92;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .play-badge {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .game-screen {
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .game-layout {
+      max-width: 1050px;
+      margin: auto;
+      min-height: calc(100vh - 40px);
+      display: grid;
+      grid-template-columns: 1fr 420px 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .side-panel {
+      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      backdrop-filter: blur(16px);
+    }
+
+    .side-panel h2 {
+      margin: 0 0 12px 0;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .side-panel p {
+      margin: 8px 0;
+      opacity: 0.85;
+      line-height: 1.6;
+    }
+
+    .back-site {
+      width: 100%;
+      background: linear-gradient(135deg, #fef08a, #facc15);
+      color: #1c1917;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 22px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #a16207, 0 10px 20px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .back-site:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #a16207, 0 14px 28px rgba(0,0,0,0.25);
+    }
+
+    .back-site:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 #a16207, 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .game-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    canvas {
+      width: 400px;
+      height: 600px;
+      max-width: 100%;
+      border: none;
+      border-radius: 28px;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.15), 0 30px 70px rgba(0,0,0,0.5);
+      touch-action: none;
+      background: #0f172a;
+    }
+
+    .stats-box {
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 16px;
+    }
+
+    .stats-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    .stats-box .stat {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      opacity: 0.6;
+      font-size: 14px;
+    }
+
+    @media (max-width: 950px) {
+      .game-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .side-panel {
+        text-align: center;
+      }
+
+      .side-panel:last-child {
+        display: none;
+      }
+
+      canvas {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #home {
+        padding: 30px 16px;
+      }
+
+      .games {
+        gap: 20px;
+      }
+
+      .card {
+        min-height: 260px;
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="home">
+  <header>
+    <h1>Infin Play</h1>
+    <p>Mini games • Big fun</p>
+  </header>
+
+  <div class="games">
+    <div class="card sky-card" onclick="openSkyBounce()">
+      <div class="card-icon">
+        <div class="sky-logo">
+          <span class="sky">SKY</span>
+          <span class="bounce">BOUNCE</span>
+        </div>
+      </div>
+      <h2>Sky Bounce</h2>
+      <p>Tap to fly, dodge the pipes, and chase your best score!</p>
+      <span class="play-badge">▶ Play Now</span>
+    </div>
+
+    <div class="card block-card" onclick="openBlockRush()">
+      <div class="card-icon">
+        <div class="block-logo">BLOCK<br>RUSH</div>
+      </div>
+      <h2>Block Rush</h2>
+      <p>Place blocks, clear lines, and build massive combos!</p>
+      <span class="play-badge">▶ Play Now</span>
+    </div>
+
+    <div class="card coming-card">
+      <div class="card-icon">
+        <span class="rocket-icon">🚀</span>
+      </div>
+      <h2>Coming Soon</h2>
+      <p>More exciting games are on the way. Stay tuned!</p>
+      <span class="play-badge">Soon™</span>
+    </div>
+  </div>
+
+  <footer>© 2026 Infin Play — Built for fun</footer>
+</div>
+
+<div id="skyGame" class="game-screen">
+  <div class="game-layout">
+    <div class="side-panel">
+      <button class="back-site" onclick="backToHome()">← Back to Games</button>
+      <h2>🐦 Sky Bounce</h2>
+      <p>Tap or press <strong>Space</strong> to bounce up. Time your taps carefully to glide through the pipes!</p>
+      <div class="stats-box">
+        <h3>How to Play</h3>
+        <p>• Small taps = gentle lift<br>• Don't hit pipes or edges<br>• Hard mode is faster & darker</p>
+      </div>
+    </div>
+
+    <div class="game-wrap">
+      <canvas id="skyCanvas" width="400" height="600"></canvas>
+    </div>
+
+    <div class="side-panel">
+      <h2>💡 Tips</h2>
+      <p>Focus on the gap, not the bird. Anticipate the next pipe early.</p>
+      <div class="stats-box">
+        <h3>Difficulty</h3>
+        <p><strong>Easy:</strong> Slower pipes, wider gaps<br><strong>Hard:</strong> Fast pipes, narrow gaps, dark theme</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="blockGame" class="game-screen">
+  <div class="game-layout">
+    <div class="side-panel">
+      <button class="back-site" onclick="backToHome()">← Back to Games</button>
+      <h2>🧱 Block Rush</h2>
+      <p>Select a block piece below the board, then tap the grid to place it. Clear full rows and columns to score!</p>
+      <div class="stats-box">
+        <h3>Controls</h3>
+        <p>1. Tap a piece to select<br>2. Tap the board to place<br>3. Clear lines for points</p>
+      </div>
+    </div>
+
+    <div class="game-wrap">
+      <canvas id="blockCanvas" width="400" height="600"></canvas>
+    </div>
+
+    <div class="side-panel">
+      <h2>📊 Scoring</h2>
+      <p>Every block placed earns points. Clear lines for bonus points with combo multipliers!</p>
+      <div class="stats-box">
+        <h3>Points</h3>
+        <p>+1 per block<br>+50 per cleared line<br>Combos multiply your score!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function hideAll() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("skyGame").style.display = "none";
+  document.getElementById("blockGame").style.display = "none";
+}
+
+function backToHome() {
+  hideAll();
+  document.getElementById("home").style.display = "block";
+  skyActive = false;
+  blockActive = false;
+}
+
+function openSkyBounce() {
+  hideAll();
+  document.getElementById("skyGame").style.display = "block";
+  skyActive = true;
+  blockActive = false;
+  skyStarted = false;
+  resetSky();
+}
+
+function openBlockRush() {
+  hideAll();
+  document.getElementById("blockGame").style.display = "block";
+  blockActive = true;
+  skyActive = false;
+  initBlockRush();
+}
+
+function round(ctx,x,y,w,h,r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+}
+
+/* SKY BOUNCE */
+
+const skyCanvas = document.getElementById("skyCanvas");
+const sctx = skyCanvas.getContext("2d");
+
+let skyActive = false;
+let skyStarted = false;
+let skyMode = "easy";
+let bird, pipes, skyScore, skyGameOver, skyFrame;
+let particles = [];
+
+let bestEasy = Number(localStorage.getItem("skyBounceBestEasy")) || 0;
+let bestHard = Number(localStorage.getItem("skyBounceBestHard")) || 0;
+
+function resetSky() {
+  bird = {
+    x: 90,
+    y: 280,
+    size: 44,
+    velocity: 0,
+    gravity: skyMode === "hard" ? 0.36 : 0.26,
+    jump: skyMode === "hard" ? -5.8 : -5.3,
+    rotation: 0
+  };
+  pipes = [];
+  particles = [];
+  skyScore = 0;
+  skyGameOver = false;
+  skyFrame = 0;
+}
+
+function skyBest() {
+  return skyMode === "hard" ? bestHard : bestEasy;
+}
+
+function saveSkyBest() {
+  if (skyMode === "easy" && skyScore > bestEasy) {
+    bestEasy = skyScore;
+    localStorage.setItem("skyBounceBestEasy", bestEasy);
+  }
+  if (skyMode === "hard" && skyScore > bestHard) {
+    bestHard = skyScore;
+    localStorage.setItem("skyBounceBestHard", bestHard);
+  }
+}
+
+function drawSkyBg() {
+  const g = sctx.createLinearGradient(0,0,0,600);
+  if (skyMode === "hard") {
+    g.addColorStop(0, "#020617");
+    g.addColorStop(0.4, "#0f172a");
+    g.addColorStop(0.7, "#1e1b4b");
+    g.addColorStop(1, "#020617");
+  } else {
+    g.addColorStop(0, "#0ea5e9");
+    g.addColorStop(0.5, "#38bdf8");
+    g.addColorStop(0.85, "#7dd3fc");
+    g.addColorStop(1, "#bae6fd");
+  }
+  sctx.fillStyle = g;
+  sctx.fillRect(0,0,400,600);
+
+  if (skyMode === "easy") {
+    drawCloud(50,100,1);
+    drawCloud(280,140,0.75);
+    drawCloud(150,320,0.6);
+    drawCloud(320,400,0.85);
+  } else {
+    drawStars();
+  }
+}
+
+function drawStars() {
+  sctx.fillStyle = "rgba(255,255,255,0.6)";
+  for (let i = 0; i < 40; i++) {
+    const x = (i * 97 + skyFrame * 0.2) % 420 - 10;
+    const y = (i * 43) % 600;
+    const s = (i % 3) + 1;
+    sctx.beginPath();
+    sctx.arc(x, y, s, 0, Math.PI * 2);
+    sctx.fill();
+  }
+}
+
+function drawCloud(x,y,s) {
+  sctx.fillStyle = "rgba(255,255,255,0.9)";
+  sctx.beginPath();
+  sctx.arc(x,y,24*s,0,Math.PI*2);
+  sctx.arc(x+32*s,y-12*s,36*s,0,Math.PI*2);
+  sctx.arc(x+70*s,y,26*s,0,Math.PI*2);
+  sctx.fill();
+}
+
+function drawSkyButton(x,y,w,h,text,gradStart,gradEnd) {
+  sctx.fillStyle = "rgba(0,0,0,0.3)";
+  round(sctx,x+4,y+6,w,h,18);
+  sctx.fill();
+
+  const btnG = sctx.createLinearGradient(x,y,x,y+h);
+  btnG.addColorStop(0, gradStart);
+  btnG.addColorStop(1, gradEnd);
+  sctx.fillStyle = btnG;
+  round(sctx,x,y,w,h,18);
+  sctx.fill();
+
+  sctx.strokeStyle = "rgba(255,255,255,0.4)";
+  sctx.lineWidth = 2;
+  round(sctx,x,y,w,h,18);
+  sctx.stroke();
+
+  sctx.fillStyle = "#fff";
+  sctx.font = "bold 22px 'Segoe UI', system-ui";
+  sctx.textAlign = "center";
+  sctx.fillText(text,x+w/2,y+h/2+8);
+}
+
+function drawSkyLogo() {
+  sctx.save();
+  sctx.textAlign = "center";
+  
+  sctx.font = "900 62px 'Segoe UI', system-ui";
+  sctx.fillStyle = "rgba(0,0,0,0.3)";
+  sctx.fillText("Sky",202,98);
+  sctx.fillStyle = "#fff";
+  sctx.fillText("Sky",200,95);
+  
+  sctx.font = "900 54px 'Segoe UI', system-ui";
+  sctx.fillStyle = "rgba(0,0,0,0.3)";
+  sctx.fillText("Bounce",202,158);
+  sctx.fillStyle = "#fde047";
+  sctx.fillText("Bounce",200,155);
+  
+  sctx.restore();
+}
+
+function drawBirdAt(x,y,size,rot) {
+  sctx.save();
+  sctx.translate(x, y);
+  sctx.rotate(rot || 0);
+
+  // Shadow
+  sctx.fillStyle = "rgba(0,0,0,0.25)";
+  sctx.beginPath();
+  sctx.ellipse(4, 6, size/2+2, size/2.5, 0, 0, Math.PI*2);
+  sctx.fill();
+
+  // Body gradient
+  const body = sctx.createRadialGradient(-8,-10,4,0,0,size/1.8);
+  if (skyMode === "hard") {
+    body.addColorStop(0, "#f97316");
+    body.addColorStop(0.5, "#ea580c");
+    body.addColorStop(1, "#9a3412");
+  } else {
+    body.addColorStop(0, "#67e8f9");
+    body.addColorStop(0.5, "#22d3ee");
+    body.addColorStop(1, "#0891b2");
+  }
+
+  sctx.fillStyle = body;
+  sctx.beginPath();
+  sctx.ellipse(0,0,size/2,size/2.3,0,0,Math.PI*2);
+  sctx.fill();
+
+  // Highlight
+  sctx.fillStyle = "rgba(255,255,255,0.35)";
+  sctx.beginPath();
+  sctx.ellipse(-8,-8,size/5,size/7,-0.5,0,Math.PI*2);
+  sctx.fill();
+
+  // Eye white
+  sctx.fillStyle = "#fff";
+  sctx.beginPath();
+  sctx.arc(12,-8,size/5.5,0,Math.PI*2);
+  sctx.fill();
+
+  // Eye pupil
+  sctx.fillStyle = "#0f172a";
+  sctx.beginPath();
+  sctx.arc(14,-8,size/12,0,Math.PI*2);
+  sctx.fill();
+
+  // Beak
+  sctx.fillStyle = "#fbbf24";
+  sctx.beginPath();
+  sctx.moveTo(size/2-6,0);
+  sctx.lineTo(size/2+12,-8);
+  sctx.lineTo(size/2+12,8);
+  sctx.closePath();
+  sctx.fill();
+
+  // Wing
+  sctx.fillStyle = skyMode === "hard" ? "#c2410c" : "#06b6d4";
+  sctx.beginPath();
+  sctx.ellipse(-14,5,size/3.5,size/6,-0.3,0,Math.PI*2);
+  sctx.fill();
+
+  sctx.restore();
+}
+
+function drawSkyStart() {
+  skyMode = "easy";
+  drawSkyBg();
+  drawSkyLogo();
+  
+  // Animated bird
+  const bobY = Math.sin(Date.now() / 300) * 8;
+  drawBirdAt(200, 230 + bobY, 65, Math.sin(Date.now() / 400) * 0.1);
+  
+  drawSkyButton(85, 320, 230, 58, "▶ Easy Mode", "#22c55e", "#16a34a");
+  drawSkyButton(85, 395, 230, 58, "▶ Hard Mode", "#ef4444", "#dc2626");
+
+  sctx.fillStyle = "rgba(255,255,255,0.8)";
+  sctx.font = "15px 'Segoe UI', system-ui";
+  sctx.textAlign = "center";
+  sctx.fillText("🏆 Easy Best: " + bestEasy + "   |   🔥 Hard Best: " + bestHard, 200, 510);
+  
+  sctx.fillStyle = "rgba(255,255,255,0.5)";
+  sctx.font = "14px 'Segoe UI', system-ui";
+  sctx.fillText("Choose a mode to start", 200, 545);
+}
+
+function addPipe() {
+  const gap = skyMode === "hard" ? 135 : 175;
+  const top = Math.random() * 220 + 60;
+  pipes.push({x: 420, width: 70, top, gap, passed: false});
+}
+
+function drawPipe(p, topPipe) {
+  const x = p.x;
+  const y = topPipe ? 0 : p.top + p.gap;
+  const h = topPipe ? p.top : 600 - p.top - p.gap;
+
+  // Shadow
+  sctx.fillStyle = "rgba(0,0,0,0.2)";
+  sctx.fillRect(x + 6, y, p.width, h);
+
+  // Pipe body gradient
+  const g = sctx.createLinearGradient(x, 0, x + p.width, 0);
+  if (skyMode === "hard") {
+    g.addColorStop(0, "#7f1d1d");
+    g.addColorStop(0.3, "#dc2626");
+    g.addColorStop(0.7, "#ef4444");
+    g.addColorStop(1, "#991b1b");
+  } else {
+    g.addColorStop(0, "#15803d");
+    g.addColorStop(0.3, "#22c55e");
+    g.addColorStop(0.7, "#4ade80");
+    g.addColorStop(1, "#166534");
+  }
+
+  sctx.fillStyle = g;
+  round(sctx, x, y, p.width, h, 8);
+  sctx.fill();
+
+  // Pipe lip
+  const lipH = 28;
+  const lipY = topPipe ? p.top - lipH : p.top + p.gap;
+  const lipW = p.width + 16;
+  const lipX = x - 8;
+
+  sctx.fillStyle = g;
+  round(sctx, lipX, lipY, lipW, lipH, 6);
+  sctx.fill();
+
+  // Highlight
+  sctx.fillStyle = "rgba(255,255,255,0.15)";
+  sctx.fillRect(x + 8, y + 4, 8, h - 8);
+}
+
+function addParticle(x, y) {
+  for (let i = 0; i < 6; i++) {
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      life: 30,
+      color: skyMode === "hard" ? "#f97316" : "#22d3ee"
+    });
+  }
+}
+
+function updateParticles() {
+  particles = particles.filter(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    return p.life > 0;
+  });
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    sctx.globalAlpha = p.life / 30;
+    sctx.fillStyle = p.color;
+    sctx.beginPath();
+    sctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    sctx.fill();
+  });
+  sctx.globalAlpha = 1;
+}
+
+function updateSky() {
+  skyFrame++;
+  bird.velocity += bird.gravity;
+  bird.y += bird.velocity;
+  bird.rotation = Math.min(Math.max(bird.velocity * 0.06, -0.5), 0.8);
+  
+  if (bird.velocity > 8) bird.velocity = 8;
+
+  if (skyFrame % (skyMode === "hard" ? 90 : 110) === 0) addPipe();
+
+  pipes.forEach(p => {
+    p.x -= skyMode === "hard" ? 3.3 : 2.5;
+
+    if (!p.passed && p.x + p.width < bird.x) {
+      skyScore++;
+      p.passed = true;
+      addParticle(bird.x, bird.y);
+    }
+
+    const hitPadding = 4;
+    const hit =
+      bird.x + bird.size / 2.5 - hitPadding > p.x &&
+      bird.x - bird.size / 2.5 + hitPadding < p.x + p.width &&
+      (bird.y - bird.size / 2.6 < p.top || bird.y + bird.size / 2.6 > p.top + p.gap);
+
+    if (hit) {
+      skyGameOver = true;
+      saveSkyBest();
+    }
+  });
+
+  pipes = pipes.filter(p => p.x + p.width > -20);
+
+  if (bird.y > 620 || bird.y < -20) {
+    skyGameOver = true;
+    saveSkyBest();
+  }
+
+  updateParticles();
+}
+
+function drawSkyScore() {
+  sctx.textAlign = "center";
+  
+  // Score box
+  sctx.fillStyle = "rgba(0,0,0,0.3)";
+  round(sctx, 140, 12, 120, 65, 16);
+  sctx.fill();
+  
+  sctx.font = "900 32px 'Segoe UI', system-ui";
+  sctx.fillStyle = "#fff";
+  sctx.fillText(skyScore, 200, 48);
+  
+  sctx.font = "bold 14px 'Segoe UI', system-ui";
+  sctx.fillStyle = "rgba(255,255,255,0.7)";
+  sctx.fillText("Best: " + skyBest(), 200, 68);
+}
+
+function drawSkyOver() {
+  saveSkyBest();
+  
+  sctx.fillStyle = "rgba(0,0,0,0.8)";
+  sctx.fillRect(0, 0, 400, 600);
+
+  sctx.textAlign = "center";
+  sctx.fillStyle = "#fff";
+  sctx.font = "900 46px 'Segoe UI', system-ui";
+  sctx.fillText("Game Over", 200, 170);
+
+  // Score display
+  sctx.fillStyle = "rgba(255,255,255,0.1)";
+  round(sctx, 100, 200, 200, 100, 20);
+  sctx.fill();
+  
+  sctx.fillStyle = "#fde047";
+  sctx.font = "bold 18px 'Segoe UI', system-ui";
+  sctx.fillText("SCORE", 200, 235);
+  sctx.font = "900 42px 'Segoe UI', system-ui";
+  sctx.fillStyle = "#fff";
+  sctx.fillText(skyScore, 200, 280);
+
+  sctx.font = "18px 'Segoe UI', system-ui";
+  sctx.fillStyle = "rgba(255,255,255,0.7)";
+  sctx.fillText("🏆 Best: " + skyBest(), 200, 330);
+
+  drawSkyButton(85, 370, 230, 54, "▶ Play Again", "#3b82f6", "#2563eb");
+  drawSkyButton(85, 440, 230, 54, "← Back Home", "#f59e0b", "#d97706");
+}
+
+function skyTap(e) {
+  e.preventDefault();
+  if (!skyActive) return;
+
+  const rect = skyCanvas.getBoundingClientRect();
+  const scaleY = 600 / rect.height;
+  const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top) * scaleY;
+
+  if (!skyStarted) {
+    if (y > 320 && y < 378) {
+      skyMode = "easy";
+      skyStarted = true;
+      resetSky();
+    }
+    if (y > 395 && y < 453) {
+      skyMode = "hard";
+      skyStarted = true;
+      resetSky();
+    }
+    return;
+  }
+
+  if (skyGameOver) {
+    if (y > 370 && y < 424) {
+      resetSky();
+      return;
+    }
+    if (y > 440 && y < 494) {
+      skyStarted = false;
+      skyGameOver = false;
+      return;
+    }
+    return;
+  }
+
+  bird.velocity = bird.jump;
+}
+
+skyCanvas.addEventListener("click", skyTap);
+skyCanvas.addEventListener("touchstart", skyTap, { passive: false });
+
+document.addEventListener("keydown", e => {
+  if (skyActive && skyStarted && !skyGameOver && e.code === "Space") {
+    e.preventDefault();
+    bird.velocity = bird.jump;
+  }
+});
+
+/* BLOCK RUSH */
+
+const blockCanvas = document.getElementById("blockCanvas");
+const bctx = blockCanvas.getContext("2d");
+
+let blockActive = false;
+let brGrid, brScore, brBest, brPieces, selectedPiece, brGameOver, brCombo, brMessage, brMessageTimer;
+
+const shapes = [
+  [[1]],
+  [[1,1]],
+  [[1],[1]],
+  [[1,1,1]],
+  [[1],[1],[1]],
+  [[1,1,1,1]],
+  [[1],[1],[1],[1]],
+  [[1,1],[1,1]],
+  [[1,1,1],[0,1,0]],
+  [[1,0],[1,1]],
+  [[0,1],[1,1]],
+  [[1,1,0],[0,1,1]],
+  [[0,1,1],[1,1,0]],
+  [[1,1,1],[1,0,0]],
+  [[1,1,1],[0,0,1]],
+  [[1,1,1],[1,1,1]],
+  [[1,0,1],[1,1,1]]
+];
+
+const blockColors = [
+  {main: "#22c55e", light: "#4ade80", dark: "#16a34a"},
+  {main: "#3b82f6", light: "#60a5fa", dark: "#2563eb"},
+  {main: "#f97316", light: "#fb923c", dark: "#ea580c"},
+  {main: "#eab308", light: "#facc15", dark: "#ca8a04"},
+  {main: "#a855f7", light: "#c084fc", dark: "#9333ea"},
+  {main: "#ef4444", light: "#f87171", dark: "#dc2626"},
+  {main: "#06b6d4", light: "#22d3ee", dark: "#0891b2"},
+  {main: "#ec4899", light: "#f472b6", dark: "#db2777"}
+];
+
+function initBlockRush() {
+  brGrid = Array.from({length: 8}, () => Array(8).fill(null));
+  brScore = 0;
+  brBest = Number(localStorage.getItem("blockRushBest")) || 0;
+  brPieces = [randomPiece(), randomPiece(), randomPiece()];
+  selectedPiece = null;
+  brGameOver = false;
+  brCombo = 0;
+  brMessage = "";
+  brMessageTimer = 0;
+}
+
+function randomPiece() {
+  const colorSet = blockColors[Math.floor(Math.random() * blockColors.length)];
+  return {
+    shape: JSON.parse(JSON.stringify(shapes[Math.floor(Math.random() * shapes.length)])),
+    color: colorSet,
+    used: false
+  };
+}
+
+function drawBlockRush() {
+  // Background
+  const g = bctx.createLinearGradient(0, 0, 0, 600);
+  g.addColorStop(0, "#1e293b");
+  g.addColorStop(0.5, "#0f172a");
+  g.addColorStop(1, "#020617");
+  bctx.fillStyle = g;
+  bctx.fillRect(0, 0, 400, 600);
+
+  drawBlockLogo();
+  drawBRGrid();
+  drawBRPieces();
+  drawBRHud();
+
+  if (brMessageTimer > 0) {
+    brMessageTimer--;
+  }
+
+  if (brGameOver) drawBROver();
+}
+
+function drawBlockLogo() {
+  bctx.textAlign = "center";
+  bctx.font = "900 34px 'Segoe UI', system-ui";
+  
+  bctx.fillStyle = "rgba(0,0,0,0.3)";
+  bctx.fillText("Block Rush", 202, 38);
+  
+  bctx.fillStyle = "#fff";
+  bctx.fillText("Block Rush", 200, 36);
+}
+
+function drawBRHud() {
+  // Score panel
+  bctx.fillStyle = "rgba(255,255,255,0.08)";
+  round(bctx, 20, 50, 170, 32, 12);
+  bctx.fill();
+  round(bctx, 210, 50, 170, 32, 12);
+  bctx.fill();
+  
+  bctx.textAlign = "center";
+  bctx.font = "bold 16px 'Segoe UI', system-ui";
+  bctx.fillStyle = "#e5e7eb";
+  bctx.fillText("Score: " + brScore, 105, 72);
+  bctx.fillText("🏆 Best: " + brBest, 295, 72);
+
+  // Combo message
+  if (brMessage && brMessageTimer > 0) {
+    const alpha = Math.min(1, brMessageTimer / 20);
+    bctx.globalAlpha = alpha;
+    bctx.font = "900 24px 'Segoe UI', system-ui";
+    bctx.fillStyle = "#fde047";
+    bctx.fillText(brMessage, 200, 475);
+    bctx.globalAlpha = 1;
+  }
+}
+
+function drawBRGrid() {
+  const startX = 28;
+  const startY = 95;
+  const cell = 43;
+  const gap = 4;
+
+  // Grid background
+  bctx.fillStyle = "rgba(255,255,255,0.06)";
+  round(bctx, 16, 88, 368, 368, 22);
+  bctx.fill();
+
+  bctx.strokeStyle = "rgba(255,255,255,0.12)";
+  bctx.lineWidth = 2;
+  round(bctx, 16, 88, 368, 368, 22);
+  bctx.stroke();
+
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      const px = startX + x * cell;
+      const py = startY + y * cell;
+      const cellData = brGrid[y][x];
+
+      if (cellData) {
+        // Filled cell with gradient
+        const cellG = bctx.createLinearGradient(px, py, px, py + cell);
+        cellG.addColorStop(0, cellData.light);
+        cellG.addColorStop(0.5, cellData.main);
+        cellG.addColorStop(1, cellData.dark);
+        
+        bctx.fillStyle = cellG;
+        round(bctx, px, py, cell - gap, cell - gap, 8);
+        bctx.fill();
+
+        // Shine
+        bctx.fillStyle = "rgba(255,255,255,0.25)";
+        round(bctx, px + 4, py + 3, cell - gap - 8, 6, 3);
+        bctx.fill();
+      } else {
+        // Empty cell
+        bctx.fillStyle = "rgba(255,255,255,0.08)";
+        round(bctx, px, py, cell - gap, cell - gap, 8);
+        bctx.fill();
+      }
+    }
+  }
+
+  if (selectedPiece !== null) {
+    bctx.font = "bold 14px 'Segoe UI', system-ui";
+    bctx.fillStyle = "rgba(255,255,255,0.6)";
+    bctx.textAlign = "center";
+    bctx.fillText("👆 Tap the board to place", 200, 475);
+  }
+}
+
+function drawBRPieces() {
+  for (let i = 0; i < 3; i++) {
+    const p = brPieces[i];
+    const boxX = 20 + i * 126;
+    const boxY = 495;
+    const boxW = 116;
+    const boxH = 90;
+
+    // Piece box
+    if (selectedPiece === i) {
+      bctx.fillStyle = "rgba(250,204,21,0.25)";
+      bctx.strokeStyle = "#fde047";
+    } else {
+      bctx.fillStyle = p.used ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.1)";
+      bctx.strokeStyle = p.used ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.2)";
+    }
+
+    round(bctx, boxX, boxY, boxW, boxH, 18);
+    bctx.fill();
+    bctx.lineWidth = 2;
+    round(bctx, boxX, boxY, boxW, boxH, 18);
+    bctx.stroke();
+
+    if (!p.used) {
+      drawMiniShape(p.shape, p.color, boxX + boxW/2, boxY + boxH/2);
+    }
+  }
+}
+
+function drawMiniShape(shape, color, cx, cy) {
+  const cell = 16;
+  const w = shape[0].length * cell;
+  const h = shape.length * cell;
+  const sx = cx - w / 2;
+  const sy = cy - h / 2;
+
+  for (let y = 0; y < shape.length; y++) {
+    for (let x = 0; x < shape[y].length; x++) {
+      if (shape[y][x]) {
+        const cellG = bctx.createLinearGradient(sx + x*cell, sy + y*cell, sx + x*cell, sy + y*cell + cell);
+        cellG.addColorStop(0, color.light);
+        cellG.addColorStop(1, color.dark);
+        
+        bctx.fillStyle = cellG;
+        round(bctx, sx + x*cell, sy + y*cell, cell - 2, cell - 2, 4);
+        bctx.fill();
+      }
+    }
+  }
+}
+
+function canPlace(piece, gx, gy) {
+  for (let y = 0; y < piece.shape.length; y++) {
+    for (let x = 0; x < piece.shape[y].length; x++) {
+      if (piece.shape[y][x]) {
+        const nx = gx + x;
+        const ny = gy + y;
+        if (nx < 0 || nx >= 8 || ny < 0 || ny >= 8) return false;
+        if (brGrid[ny][nx]) return false;
+      }
+    }
+  }
+  return true;
+}
+
+function placePiece(piece, gx, gy) {
+  let blocks = 0;
+
+  for (let y = 0; y < piece.shape.length; y++) {
+    for (let x = 0; x < piece.shape[y].length; x++) {
+      if (piece.shape[y][x]) {
+        brGrid[gy + y][gx + x] = piece.color;
+        blocks++;
+      }
+    }
+  }
+
+  brScore += blocks;
+  const cleared = clearLines();
+
+  if (cleared > 0) {
+    brCombo++;
+    brScore += cleared * 50 * brCombo;
+    if (brCombo >= 3) {
+      brMessage = "🔥 COMBO x" + brCombo + "! 🔥";
+    } else {
+      brMessage = "✨ Combo x" + brCombo + "!";
+    }
+    brMessageTimer = 60;
+  } else {
+    brCombo = 0;
+  }
+
+  if (brScore > brBest) {
+    brBest = brScore;
+    localStorage.setItem("blockRushBest", brBest);
+  }
+}
+
+function clearLines() {
+  let rows = [];
+  let cols = [];
+
+  for (let y = 0; y < 8; y++) {
+    if (brGrid[y].every(v => v)) rows.push(y);
+  }
+
+  for (let x = 0; x < 8; x++) {
+    let full = true;
+    for (let y = 0; y < 8; y++) {
+      if (!brGrid[y][x]) full = false;
+    }
+    if (full) cols.push(x);
+  }
+
+  rows.forEach(y => brGrid[y].fill(null));
+  cols.forEach(x => {
+    for (let y = 0; y < 8; y++) brGrid[y][x] = null;
+  });
+
+  return rows.length + cols.length;
+}
+
+function checkNewPieces() {
+  if (brPieces.every(p => p.used)) {
+    brPieces = [randomPiece(), randomPiece(), randomPiece()];
+    selectedPiece = null;
+  }
+
+  if (!hasMoves()) brGameOver = true;
+}
+
+function hasMoves() {
+  for (const p of brPieces) {
+    if (p.used) continue;
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        if (canPlace(p, x, y)) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function blockTap(e) {
+  e.preventDefault();
+  if (!blockActive) return;
+
+  const rect = blockCanvas.getBoundingClientRect();
+  const sx = 400 / rect.width;
+  const sy = 600 / rect.height;
+  const x = ((e.touches ? e.touches[0].clientX : e.clientX) - rect.left) * sx;
+  const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top) * sy;
+
+  if (brGameOver) {
+    initBlockRush();
+    return;
+  }
+
+  // Piece selection area
+  if (y > 495 && y < 585) {
+    const index = Math.floor((x - 20) / 126);
+    if (index >= 0 && index < 3 && !brPieces[index].used) {
+      selectedPiece = selectedPiece === index ? null : index;
+    }
+    return;
+  }
+
+  // Grid placement
+  if (selectedPiece !== null) {
+    const startX = 28;
+    const startY = 95;
+    const cell = 43;
+    const gx = Math.floor((x - startX) / cell);
+    const gy = Math.floor((y - startY) / cell);
+    const piece = brPieces[selectedPiece];
+
+    if (gx >= 0 && gx < 8 && gy >= 0 && gy < 8 && canPlace(piece, gx, gy)) {
+      placePiece(piece, gx, gy);
+      piece.used = true;
+      selectedPiece = null;
+      checkNewPieces();
+    } else if (gx >= 0 && gx < 8 && gy >= 0 && gy < 8) {
+      brMessage = "❌ Can't place there!";
+      brMessageTimer = 40;
+    }
+  }
+}
+
+function drawBROver() {
+  bctx.fillStyle = "rgba(0,0,0,0.85)";
+  bctx.fillRect(0, 0, 400, 600);
+
+  bctx.textAlign = "center";
+  bctx.fillStyle = "#fff";
+  bctx.font = "900 48px 'Segoe UI', system-ui";
+  bctx.fillText("Game Over", 200, 200);
+
+  // Score box
+  bctx.fillStyle = "rgba(255,255,255,0.1)";
+  round(bctx, 90, 230, 220, 120, 24);
+  bctx.fill();
+
+  bctx.fillStyle = "#fde047";
+  bctx.font = "bold 16px 'Segoe UI', system-ui";
+  bctx.fillText("FINAL SCORE", 200, 265);
+  
+  bctx.font = "900 48px 'Segoe UI', system-ui";
+  bctx.fillStyle = "#fff";
+  bctx.fillText(brScore, 200, 320);
+
+  bctx.font = "18px 'Segoe UI', system-ui";
+  bctx.fillStyle = "rgba(255,255,255,0.7)";
+  bctx.fillText("🏆 Best: " + brBest, 200, 380);
+
+  bctx.fillStyle = "rgba(59,130,246,0.9)";
+  round(bctx, 100, 420, 200, 50, 16);
+  bctx.fill();
+  
+  bctx.fillStyle = "#fff";
+  bctx.font = "bold 18px 'Segoe UI', system-ui";
+  bctx.fillText("▶ Play Again", 200, 452);
+}
+
+blockCanvas.addEventListener("click", blockTap);
+blockCanvas.addEventListener("touchstart", blockTap, { passive: false });
+
+function loop() {
+  if (skyActive) {
+    if (!skyStarted) {
+      drawSkyStart();
+    } else {
+      drawSkyBg();
+
+      pipes.forEach(p => {
+        drawPipe(p, true);
+        drawPipe(p, false);
+      });
+
+      drawParticles();
+      drawBirdAt(bird.x, bird.y, bird.size, bird.rotation);
+      drawSkyScore();
+
+      if (!skyGameOver) updateSky();
+      else drawSkyOver();
+    }
+  }
+
+  if (blockActive) drawBlockRush();
+
+  requestAnimationFrame(loop);
+}
+
+resetSky();
+loop();
+</script>
+
+</body>
+</html>
