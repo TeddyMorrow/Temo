@@ -31,10 +31,10 @@
       min-height: 100vh;
       overflow-x: hidden;
       background:
-        radial-gradient(circle at 8% 10%, rgba(56,189,248,0.28), transparent 28%),
-        radial-gradient(circle at 94% 18%, rgba(250,204,21,0.26), transparent 24%),
-        radial-gradient(circle at 50% 95%, rgba(251,113,133,0.16), transparent 30%),
-        linear-gradient(180deg, #ffffff 0%, #f0f9ff 45%, #e0f2fe 100%);
+        radial-gradient(circle at 8% 8%, rgba(56,189,248,0.34), transparent 28%),
+        radial-gradient(circle at 90% 14%, rgba(251,113,133,0.26), transparent 25%),
+        radial-gradient(circle at 46% 100%, rgba(250,204,21,0.22), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #eff6ff 45%, #dff4ff 100%);
     }
 
     body::before {
@@ -43,10 +43,11 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(37,99,235,0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(37,99,235,0.055) 1px, transparent 1px);
-      background-size: 34px 34px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 82%);
+        radial-gradient(circle, rgba(37,99,235,0.12) 1px, transparent 1px),
+        linear-gradient(rgba(37,99,235,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.035) 1px, transparent 1px);
+      background-size: 22px 22px, 46px 46px, 46px 46px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.58), transparent 78%);
       z-index: -2;
     }
 
@@ -106,11 +107,11 @@
       justify-content: space-between;
       align-items: center;
       gap: 18px;
-      background: rgba(255,255,255,0.82);
-      border: 2px solid rgba(37,99,235,0.12);
-      border-radius: 26px;
+      background: rgba(255,255,255,0.78);
+      border: 3px solid rgba(37,99,235,0.10);
+      border-radius: 999px;
       padding: 12px 16px;
-      box-shadow: 0 18px 45px rgba(37,99,235,0.10);
+      box-shadow: 0 8px 0 rgba(37,99,235,0.08), 0 22px 55px rgba(37,99,235,0.12);
       backdrop-filter: blur(16px);
     }
 
@@ -118,9 +119,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
+      font-weight: 1000;
+      letter-spacing: 1px;
       text-transform: uppercase;
+      color: #0f172a;
     }
 
     .brand-mark {
@@ -128,10 +130,10 @@
       height: 42px;
       display: grid;
       place-items: center;
-      border-radius: 14px;
+      border-radius: 15px;
       color: #ffffff;
-      background: linear-gradient(135deg, #2563eb, #38bdf8);
-      box-shadow: 0 8px 0 rgba(37,99,235,0.20), 0 16px 32px rgba(37,99,235,0.18);
+      background: linear-gradient(135deg, #2563eb, #38bdf8, #facc15);
+      box-shadow: 0 6px 0 rgba(37,99,235,0.18), 0 14px 30px rgba(37,99,235,0.20);
     }
 
     .toolbar {
@@ -165,43 +167,119 @@
 
     header {
       text-align: center;
-      width: min(980px, 100%);
-      margin: 0 auto 36px;
+      width: min(1180px, 100%);
+      margin: 0 auto 34px;
+      padding: 52px 26px 46px;
+      border-radius: 42px;
+      background:
+        radial-gradient(circle at 12% 20%, rgba(56,189,248,0.28), transparent 28%),
+        radial-gradient(circle at 88% 15%, rgba(251,113,133,0.22), transparent 26%),
+        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(239,246,255,0.82));
+      border: 3px solid rgba(255,255,255,0.9);
+      box-shadow: 0 12px 0 rgba(37,99,235,0.08), 0 34px 90px rgba(37,99,235,0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "★";
+      position: absolute;
+      right: 38px;
+      top: 28px;
+      font-size: 46px;
+      color: rgba(250,204,21,0.78);
+      pointer-events: none;
+      filter: drop-shadow(0 8px 12px rgba(250,204,21,0.24));
     }
 
     header h1 {
       margin: 0;
-      font-size: clamp(72px, 16vw, 168px);
+      font-size: clamp(76px, 16vw, 170px);
       line-height: 0.82;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       font-weight: 1000;
       text-transform: uppercase;
       color: #0f172a;
-      background: linear-gradient(90deg, #0f172a, #2563eb, #06b6d4, #8b5cf6, #0f172a);
-      background-size: 220% auto;
+      background: linear-gradient(90deg, #2563eb, #38bdf8, #8b5cf6, #fb7185, #2563eb);
+      background-size: 260% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 5s linear infinite;
-      filter: drop-shadow(0 8px 0 rgba(37,99,235,0.10));
+      animation: shimmer 4.5s linear infinite;
+      filter: drop-shadow(0 8px 0 rgba(37,99,235,0.12)) drop-shadow(0 22px 28px rgba(37,99,235,0.16));
+      position: relative;
+      z-index: 1;
+    }
+
+    .temido-logo-lockup {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .temido-dot {
+      width: clamp(13px, 2.2vw, 22px);
+      height: clamp(13px, 2.2vw, 22px);
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 24px rgba(56,189,248,0.58);
+      flex: 0 0 auto;
+      margin-top: clamp(26px, 5vw, 58px);
     }
 
     header p {
-      margin: 22px auto 0;
-      max-width: 680px;
-      font-size: clamp(17px, 3vw, 24px);
-      color: var(--muted);
+      margin: 20px auto 0;
+      max-width: 760px;
+      font-size: clamp(18px, 2.4vw, 26px);
+      color: rgba(15,23,42,0.66);
       line-height: 1.45;
+      font-weight: 750;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 1000;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: white;
+      box-shadow: 0 7px 0 rgba(37,99,235,0.18), 0 18px 32px rgba(37,99,235,0.20);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .hero-btn:hover { transform: translateY(-3px); }
+
+    .hero-btn.secondary {
+      background: #ffffff;
+      color: #2563eb;
+      border: 2px solid rgba(37,99,235,0.14);
+      box-shadow: 0 7px 0 rgba(37,99,235,0.08), 0 18px 32px rgba(37,99,235,0.10);
     }
 
     .ticker-wrap {
       width: min(1180px, 100%);
-      margin: 0 auto 34px;
+      margin: 0 auto 30px;
       overflow: hidden;
-      border-radius: 999px;
-      border: 2px solid rgba(37,99,235,0.12);
-      background: rgba(255,255,255,0.78);
-      box-shadow: 0 14px 40px rgba(37,99,235,0.08);
+      border-radius: 18px;
+      border: 1px solid rgba(37,99,235,0.10);
+      background: rgba(255,255,255,0.84);
+      box-shadow: 0 14px 36px rgba(15,23,42,0.05);
     }
 
     .ticker {
@@ -230,21 +308,21 @@
     .card {
       position: relative;
       overflow: hidden;
-      min-height: 340px;
-      border: 3px solid rgba(15,23,42,0.08);
+      min-height: 330px;
+      border: 3px solid rgba(255,255,255,0.85);
       border-radius: 34px;
       padding: 28px;
       cursor: pointer;
       color: #102033;
       background: #ffffff;
-      box-shadow: 0 12px 0 rgba(15,23,42,0.07), 0 24px 55px rgba(37,99,235,0.12);
+      box-shadow: 0 10px 0 rgba(15,23,42,0.06), 0 26px 65px rgba(37,99,235,0.14);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .card:hover {
-      transform: translateY(-9px) rotate(-0.5deg);
-      box-shadow: 0 18px 0 rgba(15,23,42,0.07), 0 38px 75px rgba(37,99,235,0.16);
-      border-color: rgba(37,99,235,0.22);
+      transform: translateY(-10px) rotate(-0.5deg);
+      box-shadow: 0 16px 0 rgba(15,23,42,0.06), 0 42px 90px rgba(37,99,235,0.18);
+      border-color: rgba(255,255,255,1);
     }
 
     .card::before {
@@ -289,15 +367,15 @@
     }
 
     .card-icon {
-      width: 122px;
-      height: 122px;
+      width: 112px;
+      height: 112px;
       display: grid;
       place-items: center;
       margin: 4px auto 22px;
-      border-radius: 32px;
-      background: rgba(255,255,255,0.82);
-      border: 3px solid rgba(15,23,42,0.08);
-      box-shadow: inset 0 2px 0 rgba(255,255,255,0.8), 0 9px 0 rgba(15,23,42,0.08), 0 18px 35px rgba(37,99,235,0.10);
+      border-radius: 28px;
+      background: linear-gradient(180deg, #f8fbff, #eff6ff);
+      border: 1px solid rgba(37,99,235,0.10);
+      box-shadow: 0 16px 30px rgba(37,99,235,0.09);
       animation: float 3.3s ease-in-out infinite;
     }
 
@@ -337,13 +415,13 @@
       margin: 22px auto 0;
       border-radius: 999px;
       padding: 11px 20px;
-      background: #ffffff;
+      background: #eff6ff;
       color: #1d4ed8;
-      border: 2px solid rgba(37,99,235,0.15);
-      box-shadow: 0 5px 0 rgba(37,99,235,0.16);
+      border: 1px solid rgba(37,99,235,0.12);
+      box-shadow: none;
       font-size: 13px;
       font-weight: 1000;
-      letter-spacing: 1.1px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
     }
 
@@ -364,12 +442,12 @@
     }
 
     .side-panel {
-      border: 2px solid rgba(37,99,235,0.12);
-      border-radius: 28px;
+      border: 1px solid rgba(37,99,235,0.10);
+      border-radius: 24px;
       padding: 22px;
       color: #102033;
-      background: rgba(255,255,255,0.84);
-      box-shadow: 0 12px 0 rgba(15,23,42,0.06), 0 28px 70px rgba(37,99,235,0.12);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.08);
       backdrop-filter: blur(18px);
     }
 
@@ -379,15 +457,15 @@
     .back-site, .pause-btn {
       width: 100%;
       border: 0;
-      border-radius: 17px;
+      border-radius: 14px;
       padding: 14px 18px;
       margin-bottom: 12px;
       cursor: pointer;
       color: #ffffff;
-      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
       font-size: 15px;
       font-weight: 1000;
-      box-shadow: 0 7px 0 rgba(37,99,235,0.22), 0 20px 42px rgba(37,99,235,0.16);
+      box-shadow: 0 12px 26px rgba(37,99,235,0.18);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -443,27 +521,47 @@
     }
 
     .pixel-logo {
-      font-family: Impact, 'Arial Black', system-ui, sans-serif;
+      font-family: Inter, 'Segoe UI', system-ui, sans-serif;
       font-weight: 1000;
       text-align: center;
-      line-height: 0.78;
-      font-size: 31px;
-      color: #fff;
-      letter-spacing: 1px;
+      line-height: 0.88;
+      font-size: 25px;
+      color: #ffffff;
+      letter-spacing: -0.6px;
       text-transform: uppercase;
-      -webkit-text-stroke: 2px rgba(44,30,50,0.95);
-      text-shadow:
-        4px 0 #3d2b45,
-        -4px 0 #3d2b45,
-        0 4px #3d2b45,
-        4px 5px 0 rgba(0,0,0,0.32);
+      -webkit-text-stroke: 0;
+      text-shadow: 0 4px 14px rgba(15,23,42,0.22);
+      padding: 14px 12px;
+      border-radius: 24px;
+      width: 96px;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.4), 0 12px 25px rgba(37,99,235,0.18);
     }
 
     .pixel-logo small {
       display: block;
-      color: #fef08a;
-      font-size: 22px;
+      color: rgba(255,255,255,0.92);
+      font-size: 19px;
       margin-top: 6px;
+    }
+
+    .logo-sky { background: linear-gradient(135deg, #2563eb, #38bdf8); }
+    .logo-speed { background: linear-gradient(135deg, #f59e0b, #fb7185); }
+    .logo-aim { background: linear-gradient(135deg, #ef4444, #8b5cf6); }
+    .logo-memory { background: linear-gradient(135deg, #14b8a6, #2563eb); }
+
+    .game-logo-label {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .game-logo-emoji {
+      font-size: 24px;
+      margin-bottom: 5px;
+      filter: drop-shadow(0 4px 5px rgba(0,0,0,0.18));
     }
 
     .block-logo-art {
@@ -480,9 +578,9 @@
     .block-logo-art span {
       border-radius: 7px;
       box-shadow:
-        inset 0 5px 0 rgba(255,255,255,0.35),
-        inset 0 -5px 0 rgba(0,0,0,0.18),
-        0 3px 0 rgba(0,0,0,0.22);
+        inset 0 4px 0 rgba(255,255,255,0.45),
+        inset 0 -4px 0 rgba(0,0,0,0.10),
+        0 2px 0 rgba(15,23,42,0.08);
     }
 
     .b-red { background: linear-gradient(#fb7185, #dc2626); }
@@ -500,15 +598,15 @@
     }
 
     .quick-card {
-      border: 2px solid rgba(37,99,235,0.10);
-      border-radius: 22px;
-      padding: 16px;
+      border: 3px solid rgba(255,255,255,0.75);
+      border-radius: 26px;
+      padding: 18px;
       background: rgba(255,255,255,0.78);
       backdrop-filter: blur(14px);
-      box-shadow: 0 8px 0 rgba(15,23,42,0.045), 0 18px 45px rgba(37,99,235,0.08);
+      box-shadow: 0 8px 0 rgba(37,99,235,0.06), 0 20px 45px rgba(37,99,235,0.10);
     }
 
-    .quick-card strong { display: block; margin-bottom: 5px; }
+    .quick-card strong { display: block; margin-bottom: 7px; color:#0f172a; font-size: 16px; }
     .quick-card span { color: rgba(15,23,42,0.62); font-size: 14px; line-height: 1.35; font-weight: 650; }
 
     .modal {
@@ -590,28 +688,32 @@
     </div>
 
     <header>
-      <h1>Temido</h1>
-      <p>A slick mini-game arcade with music, sound effects, saved best scores and one-more-go energy.</p>
+      <div class="temido-logo-lockup"><h1>Temido</h1><span class="temido-dot"></span></div>
+      <p>Mini games. Big fun. Pick a game, chase your best score, and keep coming back for one more go.</p>
+      <div class="hero-actions">
+        <button class="hero-btn" onclick="document.querySelector('.games').scrollIntoView({behavior:'smooth'})">Explore games</button>
+        <button class="hero-btn secondary" onclick="changeUser()">Change username</button>
+      </div>
     </header>
 
     <div class="ticker-wrap">
       <div class="ticker">
-        <span>★ Welcome back</span><span>★ Music mode</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Smooth controls</span>
-        <span>★ Welcome back</span><span>★ Music mode</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Smooth controls</span>
+        <span>★ New game logos</span><span>★ Unique music per game</span><span>★ Easy/Hard music modes</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Speed Tap</span><span>★ Aim Pop</span><span>★ Memory Flip</span>
+        <span>★ New game logos</span><span>★ Unique music per game</span><span>★ Easy/Hard music modes</span><span>★ Sound effects</span><span>★ Saved best scores</span><span>★ Sky Bounce</span><span>★ Block Rush</span><span>★ Speed Tap</span><span>★ Aim Pop</span><span>★ Memory Flip</span>
       </div>
     </div>
 
     <div class="quick-panel">
       <div class="quick-card"><strong id="sessionGreeting">👋 Ready?</strong><span>Your username is saved on this device.</span></div>
       <div class="quick-card"><strong>🔥 Best scores</strong><span>Temido remembers your best score for each game.</span></div>
-      <div class="quick-card"><strong>🎧 Arcade feel</strong><span>Music, sound effects, pause and smooth touch controls.</span></div>
+      <div class="quick-card"><strong>🎧 Custom music</strong><span>Each game has its own generated tune, and Sky Bounce has different Easy/Hard music.</span></div>
     </div>
 
     <div class="games">
       <div class="card sky-card" onclick="openSkyBounce()">
-        <div class="card-icon"><div class="pixel-logo">SKY<small>BOUNCE</small></div></div>
+        <div class="card-icon"><div class="pixel-logo logo-sky"><div class="game-logo-label"><span class="game-logo-emoji">☁️</span>SKY<small>BOUNCE</small></div></div></div>
         <h2>Sky Bounce</h2>
-        <p>Tap to fly, dodge glowing pipes, and chase a massive score.</p>
+        <p>Tap to fly, dodge glowing pipes, and chase a massive score. Easy and Hard have their own music.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
 
@@ -624,21 +726,21 @@
           </div>
         </div>
         <h2>Block Rush</h2>
-        <p>Preview your placement, tap again to confirm, clear lines and build combos.</p>
+        <p>Preview your placement, tap again to confirm, clear lines and build combos with puzzle-style music.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
 
       <div class="card coming-card" onclick="openSpeedTap()">
-        <div class="card-icon"><div class="pixel-logo">SPEED<small>TAP</small></div></div>
+        <div class="card-icon"><div class="pixel-logo logo-speed"><div class="game-logo-label"><span class="game-logo-emoji">⚡</span>SPEED<small>TAP</small></div></div></div>
         <h2>Speed Tap</h2>
-        <p>Tap as fast as you can before the timer runs out. Pure button-smashing chaos.</p>
+        <p>Tap as fast as you can before the timer runs out. Fast music, fast hands, fast scores.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
 
       <div class="card sky-card" onclick="openAimPop()">
-        <div class="card-icon"><div class="pixel-logo">AIM<small>POP</small></div></div>
+        <div class="card-icon"><div class="pixel-logo logo-aim"><div class="game-logo-label"><span class="game-logo-emoji">🎯</span>AIM<small>POP</small></div></div></div>
         <h2>Aim Pop</h2>
-        <p>Pop the targets before they vanish. Fast hands, clean aim, huge streaks.</p>
+        <p>Pop the targets before they vanish. Sharp clicks, streak sounds, quick reactions.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
 
@@ -651,7 +753,7 @@
           </div>
         </div>
         <h2>Memory Flip</h2>
-        <p>Flip the cards, match the pairs, and clear the board with fewer mistakes.</p>
+        <p>Flip the cards, match the pairs, and clear the board with calm focus music.</p>
         <span class="play-badge">▶ Play Now</span>
       </div>
     </div>
@@ -776,6 +878,18 @@ let soundOn = localStorage.getItem("temidoSound") !== "off";
 let audioCtx = null;
 let musicTimer = null;
 let musicStep = 0;
+let musicTheme = "menu";
+let lastMusicTheme = "menu";
+
+const musicThemes = {
+  menu: { speed: 240, notes: [196, 0, 247, 0, 294, 0, 247, 0, 220, 0, 262, 0, 330, 0, 262, 0], wave: "sine", volume: 0.010 },
+  skyEasy: { speed: 210, notes: [392, 0, 440, 0, 494, 0, 587, 0, 523, 0, 494, 0, 440, 0, 392, 0], wave: "triangle", volume: 0.012 },
+  skyHard: { speed: 150, notes: [196, 247, 294, 330, 294, 247, 220, 247, 196, 247, 330, 392, 330, 294, 247, 220], wave: "square", volume: 0.009 },
+  block: { speed: 260, notes: [262, 0, 330, 0, 392, 0, 330, 0, 294, 0, 349, 0, 440, 0, 349, 0], wave: "triangle", volume: 0.010 },
+  speed: { speed: 118, notes: [330, 392, 494, 392, 330, 392, 587, 494, 392, 494, 659, 587, 494, 392, 330, 392], wave: "square", volume: 0.007 },
+  aim: { speed: 170, notes: [262, 0, 392, 330, 0, 440, 392, 0, 294, 0, 440, 349, 0, 494, 440, 0], wave: "triangle", volume: 0.010 },
+  memory: { speed: 320, notes: [330, 0, 392, 0, 494, 0, 392, 0, 349, 0, 440, 0, 523, 0, 440, 0], wave: "sine", volume: 0.009 }
+};
 let paused = false;
 let playerName = localStorage.getItem("temidoUsername") || "";
 
@@ -828,19 +942,30 @@ const sfx = {
   place() { tone(260, 0.05, "square", 0.03); setTimeout(() => tone(420, 0.06, "triangle", 0.03), 45); },
   preview() { tone(620, 0.035, "triangle", 0.025); },
   clear() { [620, 740, 880].forEach((n, i) => setTimeout(() => tone(n, 0.07, "triangle", 0.04), i * 55)); },
-  error() { tone(180, 0.08, "sawtooth", 0.035); }
+  error() { tone(180, 0.08, "sawtooth", 0.035); },
+  logo() { [392, 523, 659, 784].forEach((n, i) => setTimeout(() => tone(n, 0.06, "triangle", 0.025), i * 45)); }
 };
 
 function startMusic() {
   if (!soundOn || !audioCtx || musicTimer) return;
-  const notes = [196, 0, 247, 0, 294, 0, 247, 0, 220, 0, 262, 0, 330, 0, 262, 0];
   musicTimer = setInterval(() => {
     if (!soundOn || paused) return;
-    const note = notes[musicStep % notes.length];
-    if (note) tone(note, 0.16, "sine", 0.012);
-    if (musicStep % 4 === 0) tone(note ? note / 2 : 98, 0.18, "triangle", 0.009);
+    const theme = musicThemes[musicTheme] || musicThemes.menu;
+    const note = theme.notes[musicStep % theme.notes.length];
+    if (note) {
+      tone(note, Math.min(0.2, theme.speed / 900), theme.wave, theme.volume);
+      if (musicStep % 4 === 0) tone(note / 2, Math.min(0.24, theme.speed / 850), "sine", theme.volume * 0.55);
+    }
     musicStep++;
-  }, 180);
+  }, (musicThemes[musicTheme] || musicThemes.menu).speed);
+}
+
+function setMusicTheme(theme) {
+  if (musicTheme === theme && musicTimer) return;
+  musicTheme = theme;
+  musicStep = 0;
+  stopMusic();
+  if (soundOn && audioCtx) startMusic();
 }
 
 function stopMusic() {
@@ -932,6 +1057,7 @@ function hideAll() {
 
 function backToHome() {
   initAudio(); sfx.click();
+  setMusicTheme("menu");
   hideAll();
   document.getElementById("home").style.display = "block";
   skyActive = false;
@@ -944,10 +1070,14 @@ function backToHome() {
 
 function openSkyBounce() {
   initAudio(); sfx.start();
+  setMusicTheme("menu");
   hideAll();
   document.getElementById("skyGame").style.display = "block";
   skyActive = true;
   blockActive = false;
+  speedActive = false;
+  aimActive = false;
+  memoryActive = false;
   paused = false;
   skyStarted = false;
   resetSky();
@@ -955,6 +1085,7 @@ function openSkyBounce() {
 
 function openBlockRush() {
   initAudio(); sfx.start();
+  setMusicTheme("block");
   hideAll();
   document.getElementById("blockGame").style.display = "block";
   blockActive = true;
@@ -968,6 +1099,7 @@ function openBlockRush() {
 
 function openSpeedTap() {
   initAudio(); sfx.start();
+  setMusicTheme("speed");
   hideAll();
   document.getElementById("speedGame").style.display = "block";
   speedActive = true;
@@ -981,6 +1113,7 @@ function openSpeedTap() {
 
 function openAimPop() {
   initAudio(); sfx.start();
+  setMusicTheme("aim");
   hideAll();
   document.getElementById("aimGame").style.display = "block";
   aimActive = true;
@@ -994,6 +1127,7 @@ function openAimPop() {
 
 function openMemoryFlip() {
   initAudio(); sfx.start();
+  setMusicTheme("memory");
   hideAll();
   document.getElementById("memoryGame").style.display = "block";
   memoryActive = true;
@@ -1381,14 +1515,14 @@ function skyTap(e) {
   if (paused) return;
 
   if (!skyStarted) {
-    if (y > 320 && y < 378) { skyMode = "easy"; skyStarted = true; resetSky(); sfx.start(); }
-    else if (y > 394 && y < 452) { skyMode = "hard"; skyStarted = true; resetSky(); sfx.start(); }
+    if (y > 320 && y < 378) { skyMode = "easy"; skyStarted = true; setMusicTheme("skyEasy"); resetSky(); sfx.start(); }
+    else if (y > 394 && y < 452) { skyMode = "hard"; skyStarted = true; setMusicTheme("skyHard"); resetSky(); sfx.start(); }
     return;
   }
 
   if (skyGameOver) {
     if (y > 382 && y < 437) { resetSky(); sfx.start(); }
-    else if (y > 452 && y < 507) { skyStarted = false; skyGameOver = false; sfx.click(); }
+    else if (y > 452 && y < 507) { skyStarted = false; skyGameOver = false; setMusicTheme("menu"); sfx.click(); }
     return;
   }
 
