@@ -628,11 +628,31 @@
         <span class="play-badge">▶ Play Now</span>
       </div>
 
-      <div class="card coming-card">
-        <div class="card-icon"><div class="logo-word">NEW<small>SOON</small></div></div>
-        <h2>Coming Soon</h2>
-        <p>More arcade games are being added to the Temido universe.</p>
-        <span class="play-badge">Soon™</span>
+      <div class="card coming-card" onclick="openSpeedTap()">
+        <div class="card-icon"><div class="pixel-logo">SPEED<small>TAP</small></div></div>
+        <h2>Speed Tap</h2>
+        <p>Tap as fast as you can before the timer runs out. Pure button-smashing chaos.</p>
+        <span class="play-badge">▶ Play Now</span>
+      </div>
+
+      <div class="card sky-card" onclick="openAimPop()">
+        <div class="card-icon"><div class="pixel-logo">AIM<small>POP</small></div></div>
+        <h2>Aim Pop</h2>
+        <p>Pop the targets before they vanish. Fast hands, clean aim, huge streaks.</p>
+        <span class="play-badge">▶ Play Now</span>
+      </div>
+
+      <div class="card block-card" onclick="openMemoryFlip()">
+        <div class="card-icon">
+          <div class="block-logo-art" aria-label="Memory Flip logo">
+            <span class="b-purple"></span><span class="b-blue"></span><span class="b-yellow"></span>
+            <span class="b-green"></span><span class="b-red"></span><span class="b-blue"></span>
+            <span class="b-yellow"></span><span class="b-purple"></span><span class="b-green"></span>
+          </div>
+        </div>
+        <h2>Memory Flip</h2>
+        <p>Flip the cards, match the pairs, and clear the board with fewer mistakes.</p>
+        <span class="play-badge">▶ Play Now</span>
       </div>
     </div>
 
@@ -705,6 +725,48 @@
           <p>+1 per block<br>+50 per line × combo<br>Best score saves automatically</p>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="speedGame" class="game-screen page">
+    <div class="game-layout">
+      <div class="side-panel">
+        <button class="back-site" onclick="backToHome()">← Back to Games</button>
+        <button class="pause-btn" onclick="togglePause()" id="speedPauseBtn">⏸ Pause</button>
+        <h2>⚡ Speed Tap</h2>
+        <p>Tap the giant button as many times as possible in 10 seconds.</p>
+        <div class="stats-box"><h3>Tip</h3><p>Use two fingers on mobile or rapid clicks on desktop.</p></div>
+      </div>
+      <div class="game-wrap" id="speedWrap"><canvas id="speedCanvas" width="400" height="600"></canvas></div>
+      <div class="side-panel"><h2>🏆 Goal</h2><p>Beat your saved best score. Every tap has sound and bounce feedback.</p></div>
+    </div>
+  </div>
+
+  <div id="aimGame" class="game-screen page">
+    <div class="game-layout">
+      <div class="side-panel">
+        <button class="back-site" onclick="backToHome()">← Back to Games</button>
+        <button class="pause-btn" onclick="togglePause()" id="aimPauseBtn">⏸ Pause</button>
+        <h2>🎯 Aim Pop</h2>
+        <p>Tap targets before they disappear. Misses break your streak.</p>
+        <div class="stats-box"><h3>Scoring</h3><p>Targets give points. Streaks make the score climb faster.</p></div>
+      </div>
+      <div class="game-wrap" id="aimWrap"><canvas id="aimCanvas" width="400" height="600"></canvas></div>
+      <div class="side-panel"><h2>⚡ Fast Mode</h2><p>The target shrinks and moves faster as your score rises.</p></div>
+    </div>
+  </div>
+
+  <div id="memoryGame" class="game-screen page">
+    <div class="game-layout">
+      <div class="side-panel">
+        <button class="back-site" onclick="backToHome()">← Back to Games</button>
+        <button class="pause-btn" onclick="togglePause()" id="memoryPauseBtn">⏸ Pause</button>
+        <h2>🧠 Memory Flip</h2>
+        <p>Flip cards and match pairs. Fewer moves gives a better score.</p>
+        <div class="stats-box"><h3>Controls</h3><p>Tap one card, then tap another. Match all pairs to win.</p></div>
+      </div>
+      <div class="game-wrap" id="memoryWrap"><canvas id="memoryCanvas" width="400" height="600"></canvas></div>
+      <div class="side-panel"><h2>✨ Details</h2><p>Matched cards sparkle, mistakes shake, and your best score saves.</p></div>
     </div>
   </div>
 
@@ -854,12 +916,18 @@ function togglePause() {
   sfx.click();
   document.getElementById("skyPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
   document.getElementById("blockPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+  document.getElementById("speedPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+  document.getElementById("aimPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+  document.getElementById("memoryPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
 }
 
 function hideAll() {
   document.getElementById("home").style.display = "none";
   document.getElementById("skyGame").style.display = "none";
   document.getElementById("blockGame").style.display = "none";
+  document.getElementById("speedGame").style.display = "none";
+  document.getElementById("aimGame").style.display = "none";
+  document.getElementById("memoryGame").style.display = "none";
 }
 
 function backToHome() {
@@ -868,6 +936,9 @@ function backToHome() {
   document.getElementById("home").style.display = "block";
   skyActive = false;
   blockActive = false;
+  speedActive = false;
+  aimActive = false;
+  memoryActive = false;
   paused = false;
 }
 
@@ -888,8 +959,50 @@ function openBlockRush() {
   document.getElementById("blockGame").style.display = "block";
   blockActive = true;
   skyActive = false;
+  speedActive = false;
+  aimActive = false;
+  memoryActive = false;
   paused = false;
   initBlockRush();
+}
+
+function openSpeedTap() {
+  initAudio(); sfx.start();
+  hideAll();
+  document.getElementById("speedGame").style.display = "block";
+  speedActive = true;
+  skyActive = false;
+  blockActive = false;
+  aimActive = false;
+  memoryActive = false;
+  paused = false;
+  initSpeedTap();
+}
+
+function openAimPop() {
+  initAudio(); sfx.start();
+  hideAll();
+  document.getElementById("aimGame").style.display = "block";
+  aimActive = true;
+  skyActive = false;
+  blockActive = false;
+  speedActive = false;
+  memoryActive = false;
+  paused = false;
+  initAimPop();
+}
+
+function openMemoryFlip() {
+  initAudio(); sfx.start();
+  hideAll();
+  document.getElementById("memoryGame").style.display = "block";
+  memoryActive = true;
+  skyActive = false;
+  blockActive = false;
+  speedActive = false;
+  aimActive = false;
+  paused = false;
+  initMemoryFlip();
 }
 
 function round(ctx, x, y, w, h, r) {
@@ -1698,6 +1811,171 @@ function drawBROver() {
 blockCanvas.addEventListener("click", blockTap);
 blockCanvas.addEventListener("touchstart", blockTap, { passive: false });
 
+/* SPEED TAP */
+const speedCanvas = document.getElementById("speedCanvas");
+const spctx = speedCanvas.getContext("2d");
+let speedActive = false, speedStarted = false, speedScore = 0, speedBest = Number(localStorage.getItem("temidoSpeedBest")) || 0;
+let speedTime = 10, speedLast = 0, speedOver = false, speedPulse = 0;
+
+function initSpeedTap() {
+  speedStarted = false; speedScore = 0; speedTime = 10; speedLast = performance.now(); speedOver = false; speedPulse = 0;
+}
+
+function drawSpeedTap(ts) {
+  const g = spctx.createLinearGradient(0,0,0,600);
+  g.addColorStop(0,"#eff6ff"); g.addColorStop(1,"#bae6fd");
+  spctx.fillStyle = g; spctx.fillRect(0,0,400,600);
+
+  spctx.textAlign = "center";
+  spctx.fillStyle = "#0f172a";
+  spctx.font = "1000 40px Inter, Segoe UI, system-ui";
+  spctx.fillText("Speed Tap",200,55);
+
+  spctx.fillStyle = "rgba(37,99,235,0.10)"; round(spctx,24,78,352,64,22); spctx.fill();
+  spctx.font = "900 18px Inter, Segoe UI, system-ui";
+  spctx.fillStyle = "#1d4ed8";
+  spctx.fillText("Score: " + speedScore + "     Best: " + speedBest,200,118);
+
+  if (speedStarted && !speedOver && !paused) {
+    const now = ts || performance.now();
+    const diff = (now - speedLast) / 1000;
+    speedLast = now;
+    speedTime -= diff;
+    if (speedTime <= 0) {
+      speedTime = 0; speedOver = true; sfx.crash(); vibrate(60); screenShake("speedWrap");
+      if (speedScore > speedBest) { speedBest = speedScore; localStorage.setItem("temidoSpeedBest", speedBest); sfx.best(); }
+    }
+  } else speedLast = ts || performance.now();
+
+  spctx.font = "1000 52px Inter, Segoe UI, system-ui";
+  spctx.fillStyle = speedTime <= 3 && speedStarted ? "#fb7185" : "#2563eb";
+  spctx.fillText(speedTime.toFixed(1),200,202);
+
+  const r = 104 + speedPulse;
+  speedPulse *= 0.82;
+  const btn = spctx.createRadialGradient(200,330,20,200,330,r);
+  btn.addColorStop(0,"#ffffff"); btn.addColorStop(0.4,"#38bdf8"); btn.addColorStop(1,"#2563eb");
+  spctx.fillStyle = "rgba(15,23,42,0.12)"; spctx.beginPath(); spctx.arc(200,342,r,0,Math.PI*2); spctx.fill();
+  spctx.fillStyle = btn; spctx.beginPath(); spctx.arc(200,330,r,0,Math.PI*2); spctx.fill();
+  spctx.strokeStyle = "rgba(255,255,255,0.9)"; spctx.lineWidth = 7; spctx.stroke();
+  spctx.fillStyle = "#fff"; spctx.font = "1000 32px Inter, Segoe UI, system-ui";
+  spctx.fillText(speedOver ? "AGAIN" : speedStarted ? "TAP!" : "START",200,342);
+
+  spctx.fillStyle = "rgba(15,23,42,0.58)"; spctx.font = "800 15px Inter, Segoe UI, system-ui";
+  spctx.fillText(speedOver ? "Tap to restart" : speedStarted ? "Keep going!" : "Tap the button to begin",200,520);
+  if (paused) drawPaused(spctx);
+}
+
+function speedTap(e) {
+  e.preventDefault(); initAudio(); if (!speedActive || paused) return;
+  const rect = speedCanvas.getBoundingClientRect();
+  const sx = 400 / rect.width, sy = 600 / rect.height;
+  const x = ((e.touches ? e.touches[0].clientX : e.clientX) - rect.left) * sx;
+  const y = ((e.touches ? e.touches[0].clientY : e.clientY) - rect.top) * sy;
+  const d = Math.hypot(x-200, y-330);
+  if (d > 125) return;
+  if (speedOver) { initSpeedTap(); sfx.start(); return; }
+  if (!speedStarted) { speedStarted = true; speedLast = performance.now(); }
+  speedScore++; speedPulse = 16; sfx.click(); vibrate(8);
+}
+
+speedCanvas.addEventListener("click", speedTap);
+speedCanvas.addEventListener("touchstart", speedTap, { passive:false });
+
+/* AIM POP */
+const aimCanvas = document.getElementById("aimCanvas");
+const actx = aimCanvas.getContext("2d");
+let aimActive = false, aimScore = 0, aimBest = Number(localStorage.getItem("temidoAimBest")) || 0, aimOver = false;
+let target = null, aimLife = 0, aimStreak = 0, aimMisses = 0, aimParticles = [];
+
+function initAimPop() { aimScore = 0; aimOver = false; aimStreak = 0; aimMisses = 0; aimParticles = []; spawnTarget(); }
+function spawnTarget() {
+  const size = Math.max(26, 58 - Math.floor(aimScore / 8));
+  target = { x: 45 + Math.random()*310, y: 105 + Math.random()*405, r: size };
+  aimLife = Math.max(45, 105 - Math.floor(aimScore / 2));
+}
+function drawAimPop() {
+  const g = actx.createLinearGradient(0,0,0,600); g.addColorStop(0,"#f8fafc"); g.addColorStop(1,"#dbeafe");
+  actx.fillStyle = g; actx.fillRect(0,0,400,600);
+  actx.textAlign = "center"; actx.fillStyle = "#0f172a"; actx.font = "1000 40px Inter, Segoe UI, system-ui"; actx.fillText("Aim Pop",200,54);
+  actx.fillStyle = "rgba(37,99,235,0.10)"; round(actx,18,75,364,50,18); actx.fill();
+  actx.fillStyle = "#1d4ed8"; actx.font = "900 15px Inter, Segoe UI, system-ui";
+  actx.fillText("Score: " + aimScore + "   Streak: " + aimStreak + "   Best: " + aimBest,200,106);
+
+  if (!paused && !aimOver) {
+    aimLife--;
+    if (aimLife <= 0) { aimStreak = 0; aimMisses++; sfx.error(); spawnTarget(); if (aimMisses >= 5) endAim(); }
+  }
+
+  if (target && !aimOver) {
+    const pulse = Math.sin(Date.now()/90)*4;
+    actx.fillStyle = "rgba(251,113,133,0.18)"; actx.beginPath(); actx.arc(target.x,target.y,target.r+14+pulse,0,Math.PI*2); actx.fill();
+    actx.fillStyle = "#fb7185"; actx.beginPath(); actx.arc(target.x,target.y,target.r,0,Math.PI*2); actx.fill();
+    actx.fillStyle = "#fff"; actx.beginPath(); actx.arc(target.x,target.y,target.r*0.62,0,Math.PI*2); actx.fill();
+    actx.fillStyle = "#2563eb"; actx.beginPath(); actx.arc(target.x,target.y,target.r*0.32,0,Math.PI*2); actx.fill();
+  }
+
+  updateAimParticles(); drawAimParticles();
+  actx.fillStyle = "rgba(15,23,42,0.58)"; actx.font = "800 15px Inter, Segoe UI, system-ui";
+  actx.fillText(aimOver ? "Tap to restart" : "Miss 5 targets and it's game over",200,548);
+  if (aimOver) drawAimOver();
+  if (paused) drawPaused(actx);
+}
+function endAim() { aimOver = true; screenShake("aimWrap"); vibrate(60); sfx.crash(); if (aimScore > aimBest) { aimBest = aimScore; localStorage.setItem("temidoAimBest", aimBest); sfx.best(); } }
+function aimTap(e) {
+  e.preventDefault(); initAudio(); if (!aimActive || paused) return;
+  if (aimOver) { initAimPop(); sfx.start(); return; }
+  const rect = aimCanvas.getBoundingClientRect(); const sx = 400/rect.width, sy = 600/rect.height;
+  const x = ((e.touches ? e.touches[0].clientX : e.clientX)-rect.left)*sx;
+  const y = ((e.touches ? e.touches[0].clientY : e.clientY)-rect.top)*sy;
+  if (target && Math.hypot(x-target.x,y-target.y) <= target.r) {
+    aimStreak++; aimScore += 10 + Math.min(aimStreak, 10); sfx.score(); vibrate(10); burstAim(target.x,target.y); spawnTarget();
+  } else { aimStreak = 0; aimMisses++; sfx.error(); screenShake("aimWrap"); if (aimMisses >= 5) endAim(); }
+}
+function burstAim(x,y){ for(let i=0;i<16;i++) aimParticles.push({x,y,vx:(Math.random()-0.5)*7,vy:(Math.random()-0.5)*7,life:25,color:["#2563eb","#38bdf8","#fb7185","#facc15"][i%4]}); }
+function updateAimParticles(){ if(paused)return; aimParticles=aimParticles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.life--;return p.life>0;}); }
+function drawAimParticles(){ aimParticles.forEach(p=>{actx.globalAlpha=p.life/25;actx.fillStyle=p.color;actx.beginPath();actx.arc(p.x,p.y,5,0,Math.PI*2);actx.fill();});actx.globalAlpha=1; }
+function drawAimOver(){ actx.fillStyle="rgba(255,255,255,0.82)"; round(actx,70,210,260,170,28); actx.fill(); actx.fillStyle="#0f172a"; actx.font="1000 38px Inter"; actx.fillText("Game Over",200,265); actx.font="900 22px Inter"; actx.fillStyle="#2563eb"; actx.fillText("Score " + aimScore,200,310); actx.fillStyle="rgba(15,23,42,0.6)"; actx.font="800 15px Inter"; actx.fillText("Best " + aimBest,200,342); }
+aimCanvas.addEventListener("click", aimTap); aimCanvas.addEventListener("touchstart", aimTap, {passive:false});
+
+/* MEMORY FLIP */
+const memoryCanvas = document.getElementById("memoryCanvas");
+const mctx = memoryCanvas.getContext("2d");
+let memoryActive = false, memCards = [], memOpen = [], memMatched = 0, memMoves = 0, memBest = Number(localStorage.getItem("temidoMemoryBest")) || 0, memLock = 0, memOver = false;
+const memIcons = ["⭐","🚀","🎧","⚡","🎯","🧩","💎","🔥"];
+function initMemoryFlip(){
+  const deck = [...memIcons, ...memIcons].sort(()=>Math.random()-0.5);
+  memCards = deck.map((icon,i)=>({icon,open:false,matched:false,x:32+(i%4)*86,y:118+Math.floor(i/4)*86}));
+  memOpen=[]; memMatched=0; memMoves=0; memLock=0; memOver=false;
+}
+function drawMemoryFlip(){
+  const g=mctx.createLinearGradient(0,0,0,600); g.addColorStop(0,"#ffffff"); g.addColorStop(1,"#e0f2fe"); mctx.fillStyle=g; mctx.fillRect(0,0,400,600);
+  mctx.textAlign="center"; mctx.fillStyle="#0f172a"; mctx.font="1000 38px Inter"; mctx.fillText("Memory Flip",200,54);
+  mctx.fillStyle="rgba(37,99,235,0.10)"; round(mctx,25,75,350,45,17); mctx.fill();
+  mctx.fillStyle="#1d4ed8"; mctx.font="900 15px Inter"; mctx.fillText("Moves: "+memMoves+"   Best: "+(memBest||"—"),200,103);
+  if(!paused && memLock>0){ memLock--; if(memLock===0){ memOpen.forEach(c=>c.open=false); memOpen=[]; }}
+  memCards.forEach(drawMemCard);
+  if(memOver) drawMemoryOver();
+  if(paused) drawPaused(mctx);
+}
+function drawMemCard(c){
+  const open=c.open||c.matched;
+  mctx.fillStyle=open?"#ffffff":"#2563eb"; round(mctx,c.x,c.y,72,72,18); mctx.fill();
+  mctx.strokeStyle=open?"rgba(37,99,235,0.18)":"rgba(255,255,255,0.8)"; mctx.lineWidth=3; round(mctx,c.x,c.y,72,72,18); mctx.stroke();
+  mctx.fillStyle=open?"#0f172a":"#ffffff"; mctx.font=open?"32px serif":"1000 28px Inter"; mctx.textAlign="center"; mctx.fillText(open?c.icon:"?",c.x+36,c.y+47);
+  if(c.matched){ mctx.fillStyle="rgba(34,197,94,0.18)"; round(mctx,c.x,c.y,72,72,18); mctx.fill(); }
+}
+function memoryTap(e){
+  e.preventDefault(); initAudio(); if(!memoryActive||paused)return; if(memOver){initMemoryFlip();sfx.start();return;} if(memLock>0)return;
+  const rect=memoryCanvas.getBoundingClientRect(); const sx=400/rect.width, sy=600/rect.height;
+  const x=((e.touches?e.touches[0].clientX:e.clientX)-rect.left)*sx; const y=((e.touches?e.touches[0].clientY:e.clientY)-rect.top)*sy;
+  const c=memCards.find(card=>x>=card.x&&x<=card.x+72&&y>=card.y&&y<=card.y+72&&!card.open&&!card.matched);
+  if(!c)return; c.open=true; memOpen.push(c); sfx.preview();
+  if(memOpen.length===2){ memMoves++; const [a,b]=memOpen; if(a.icon===b.icon){ a.matched=b.matched=true; memMatched+=2; memOpen=[]; sfx.clear(); vibrate(15); if(memMatched===memCards.length){ memOver=true; const finalScore=Math.max(10, 300-memMoves*10); if(!memBest||finalScore>memBest){memBest=finalScore; localStorage.setItem("temidoMemoryBest",memBest); sfx.best();} } } else { memLock=45; sfx.error(); screenShake("memoryWrap"); } }
+}
+function drawMemoryOver(){ mctx.fillStyle="rgba(255,255,255,0.86)"; round(mctx,58,445,284,95,24); mctx.fill(); mctx.fillStyle="#0f172a"; mctx.font="1000 28px Inter"; mctx.fillText("Board Clear!",200,482); mctx.fillStyle="#2563eb"; mctx.font="900 15px Inter"; mctx.fillText("Tap to play again",200,512); }
+memoryCanvas.addEventListener("click", memoryTap); memoryCanvas.addEventListener("touchstart", memoryTap, {passive:false});
+
 function loop() {
   if (skyActive) {
     if (!skyStarted) drawSkyStart();
@@ -1713,6 +1991,9 @@ function loop() {
     }
   }
   if (blockActive) drawBlockRush();
+  if (speedActive) drawSpeedTap(performance.now());
+  if (aimActive) drawAimPop();
+  if (memoryActive) drawMemoryFlip();
   requestAnimationFrame(loop);
 }
 
