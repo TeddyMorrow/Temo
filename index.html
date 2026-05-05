@@ -876,6 +876,7 @@
 /* SITE + AUDIO */
 let soundOn = localStorage.getItem("temidoSound") !== "off";
 let audioCtx = null;
+let audioUnlocked = false;
 let musicTimer = null;
 let musicStep = 0;
 let musicTheme = "menu";
@@ -894,10 +895,20 @@ let paused = false;
 let playerName = localStorage.getItem("temidoUsername") || "";
 
 function initAudio() {
+  if (!soundOn) return;
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if (audioCtx.state === "suspended") audioCtx.resume();
-  if (soundOn) startMusic();
+  audioUnlocked = true;
+  startMusic();
 }
+
+function unlockAudio() {
+  if (audioUnlocked || !soundOn) return;
+  initAudio();
+}
+
+document.addEventListener("click", unlockAudio, { once: true });
+document.addEventListener("touchstart", unlockAudio, { once: true, passive: true });
 
 function tone(freq, duration = 0.1, type = "sine", volume = 0.05, slideTo = null) {
   if (!soundOn || !audioCtx) return;
@@ -947,17 +958,19 @@ const sfx = {
 };
 
 function startMusic() {
-  if (!soundOn || !audioCtx || musicTimer) return;
+  if (!soundOn || !audioCtx) return;
+  stopMusic();
+  const theme = musicThemes[musicTheme] || musicThemes.menu;
   musicTimer = setInterval(() => {
-    if (!soundOn || paused) return;
-    const theme = musicThemes[musicTheme] || musicThemes.menu;
-    const note = theme.notes[musicStep % theme.notes.length];
+    if (!soundOn || paused || !audioCtx) return;
+    const activeTheme = musicThemes[musicTheme] || musicThemes.menu;
+    const note = activeTheme.notes[musicStep % activeTheme.notes.length];
     if (note) {
-      tone(note, Math.min(0.2, theme.speed / 900), theme.wave, theme.volume);
-      if (musicStep % 4 === 0) tone(note / 2, Math.min(0.24, theme.speed / 850), "sine", theme.volume * 0.55);
+      tone(note, Math.min(0.2, activeTheme.speed / 900), activeTheme.wave, activeTheme.volume);
+      if (musicStep % 4 === 0) tone(note / 2, Math.min(0.24, activeTheme.speed / 850), "sine", activeTheme.volume * 0.55);
     }
     musicStep++;
-  }, (musicThemes[musicTheme] || musicThemes.menu).speed);
+  }, theme.speed);
 }
 
 function setMusicTheme(theme) {
@@ -977,8 +990,13 @@ function toggleSound() {
   soundOn = !soundOn;
   localStorage.setItem("temidoSound", soundOn ? "on" : "off");
   updateSoundButton();
-  if (soundOn) { initAudio(); sfx.start(); }
-  else stopMusic();
+  if (soundOn) {
+    audioUnlocked = false;
+    initAudio();
+    sfx.start();
+  } else {
+    stopMusic();
+  }
 }
 
 function updateSoundButton() {
@@ -1014,6 +1032,7 @@ function saveUsername() {
   localStorage.setItem("temidoUsername", playerName);
   document.getElementById("userGate").style.display = "none";
   updateSoundButton();
+  unlockAudio();
   initAudio();
   sfx.start();
 }
@@ -1039,11 +1058,10 @@ function screenShake(id) {
 function togglePause() {
   paused = !paused;
   sfx.click();
-  document.getElementById("skyPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
-  document.getElementById("blockPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
-  document.getElementById("speedPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
-  document.getElementById("aimPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
-  document.getElementById("memoryPauseBtn").textContent = paused ? "▶ Resume" : "⏸ Pause";
+  ["skyPauseBtn", "blockPauseBtn", "speedPauseBtn", "aimPauseBtn", "memoryPauseBtn"].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.textContent = paused ? "▶ Resume" : "⏸ Pause";
+  });
 }
 
 function hideAll() {
@@ -1069,6 +1087,7 @@ function backToHome() {
 }
 
 function openSkyBounce() {
+  unlockAudio();
   initAudio(); sfx.start();
   setMusicTheme("menu");
   hideAll();
@@ -1084,6 +1103,7 @@ function openSkyBounce() {
 }
 
 function openBlockRush() {
+  unlockAudio();
   initAudio(); sfx.start();
   setMusicTheme("block");
   hideAll();
@@ -1098,6 +1118,7 @@ function openBlockRush() {
 }
 
 function openSpeedTap() {
+  unlockAudio();
   initAudio(); sfx.start();
   setMusicTheme("speed");
   hideAll();
@@ -1112,6 +1133,7 @@ function openSpeedTap() {
 }
 
 function openAimPop() {
+  unlockAudio();
   initAudio(); sfx.start();
   setMusicTheme("aim");
   hideAll();
@@ -1126,6 +1148,7 @@ function openAimPop() {
 }
 
 function openMemoryFlip() {
+  unlockAudio();
   initAudio(); sfx.start();
   setMusicTheme("memory");
   hideAll();
