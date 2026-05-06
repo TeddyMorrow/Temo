@@ -39,6 +39,244 @@
       .helper{transform:scale(.72);transform-origin:bottom right;right:3px;bottom:3px}.helper-bubble{display:none}.secret-stage{height:min(82vh,520px)}
     }
     @media(max-width:390px){.games{grid-template-columns:1fr}.game{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}.game .icon{grid-row:1 / span 3;margin:0;width:60px;height:60px}.game h2{font-size:19px}.game p{font-size:12px}.play{width:max-content}.stats{grid-template-columns:repeat(3,1fr)}}
+  
+
+/* =========================================================
+   NEAL.FUN-STYLE GAME CARD LAYOUT - ADDED BY CHATGPT
+   This sits at the end so it overrides older Temido card CSS.
+   ========================================================= */
+#home .section{
+  max-width:1180px !important;
+  margin:20px auto 12px !important;
+  padding:0 18px !important;
+  font-size:42px !important;
+  line-height:.9 !important;
+  letter-spacing:-2px !important;
+}
+
+#home .games{
+  max-width:1180px !important;
+  margin:0 auto 42px !important;
+  padding:0 18px 34px !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:18px !important;
+}
+
+#home .game{
+  background:#fff !important;
+  border:3px solid #171717 !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  padding:0 !important;
+  min-height:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  box-shadow:none !important;
+  transform:none !important;
+}
+
+#home .game:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 8px 18px rgba(0,0,0,.12) !important;
+}
+
+#home .game .icon{
+  width:100% !important;
+  height:120px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-bottom:3px solid #171717 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+
+#home .game .icon:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(255,255,255,.75) 0 10%, transparent 11%),
+    radial-gradient(circle at 78% 72%, rgba(255,255,255,.45) 0 9%, transparent 10%),
+    linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+#home .game .mini-art{
+  width:112px !important;
+  height:112px !important;
+  display:block !important;
+  position:relative !important;
+  z-index:1 !important;
+  filter:drop-shadow(4px 5px 0 rgba(23,23,23,.35));
+}
+
+#home .game .mini-art svg{
+  width:100% !important;
+  height:100% !important;
+}
+
+#home .run .icon{background:linear-gradient(135deg,#a7f3d0,#38bdf8) !important;}
+#home .sky .icon{background:linear-gradient(135deg,#bae6fd,#7dd3fc) !important;}
+#home .block .icon{background:linear-gradient(135deg,#dbeafe,#2563eb) !important;}
+#home .tap .icon{background:linear-gradient(135deg,#fef08a,#facc15) !important;}
+#home .aim .icon{background:linear-gradient(135deg,#fecaca,#ef4444) !important;}
+#home .memory .icon{background:linear-gradient(135deg,#ede9fe,#a78bfa) !important;}
+#home .circle .icon{background:linear-gradient(135deg,#ecfeff,#67e8f9) !important;}
+#home .dodge .icon{background:linear-gradient(135deg,#020617,#334155) !important;}
+#home .stack .icon{background:linear-gradient(135deg,#fef3c7,#fcd34d) !important;}
+#home .wave .icon{background:linear-gradient(135deg,#99f6e4,#0ea5e9) !important;}
+#home .orbit .icon{background:linear-gradient(135deg,#1e1b4b,#312e81) !important;}
+#home .colour .icon{background:linear-gradient(135deg,#fca5a5,#fef08a,#86efac,#67e8f9) !important;}
+#home .reflex .icon{background:linear-gradient(135deg,#bbf7d0,#22c55e) !important;}
+
+#home .game h2{
+  font-size:30px !important;
+  line-height:.95 !important;
+  letter-spacing:-1.4px !important;
+  font-weight:900 !important;
+  margin:15px 16px 8px !important;
+}
+
+#home .game p{
+  margin:0 16px !important;
+  color:#3f3f46 !important;
+  font-size:14px !important;
+  line-height:1.25 !important;
+  font-weight:900 !important;
+}
+
+#home .play{
+  margin:14px 16px 16px !important;
+  width:max-content !important;
+  display:inline-block !important;
+  background:#171717 !important;
+  color:#fff !important;
+  border-radius:999px !important;
+  padding:9px 16px !important;
+  font-size:12px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  box-shadow:none !important;
+}
+
+@media(max-width:760px){
+  #home .hero{
+    margin:10px auto 4px !important;
+    padding:12px 8px !important;
+  }
+
+  #home .section{
+    font-size:38px !important;
+    margin:12px auto 10px !important;
+    padding:0 14px !important;
+  }
+
+  #home .games{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+    padding:0 12px 26px !important;
+  }
+
+  #home .game{
+    display:flex !important;
+    grid-template-columns:none !important;
+    border-width:2.5px !important;
+    border-radius:10px !important;
+    box-shadow:none !important;
+  }
+
+  #home .game .icon{
+    grid-row:auto !important;
+    width:100% !important;
+    height:82px !important;
+    border-width:0 0 2.5px 0 !important;
+    border-radius:0 !important;
+    margin:0 !important;
+  }
+
+  #home .game .mini-art{
+    width:74px !important;
+    height:74px !important;
+  }
+
+  #home .game h2{
+    font-size:22px !important;
+    margin:10px 10px 6px !important;
+    line-height:.95 !important;
+    letter-spacing:-.8px !important;
+  }
+
+  #home .game p{
+    font-size:11px !important;
+    line-height:1.18 !important;
+    margin:0 10px !important;
+  }
+
+  #home .play{
+    margin:10px !important;
+    padding:8px 12px !important;
+    font-size:11px !important;
+  }
+
+  #consentBanner{
+    left:10px !important;
+    right:10px !important;
+    bottom:10px !important;
+    border-width:3px !important;
+    border-radius:16px !important;
+    padding:12px !important;
+    box-shadow:5px 5px 0 #171717 !important;
+  }
+
+  #consentBanner p{
+    font-size:14px !important;
+    line-height:1.25 !important;
+  }
+}
+
+@media(max-width:390px){
+  #home .games{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:9px !important;
+    padding:0 10px 24px !important;
+  }
+
+  #home .game .icon{
+    height:72px !important;
+  }
+
+  #home .game .mini-art{
+    width:64px !important;
+    height:64px !important;
+  }
+
+  #home .game h2{
+    font-size:18px !important;
+    margin:9px 9px 5px !important;
+  }
+
+  #home .game p{
+    font-size:10px !important;
+  }
+
+  #home .play{
+    font-size:10px !important;
+    padding:7px 10px !important;
+    margin:9px !important;
+  }
+}
+
+@media(max-width:300px){
+  #home .games{grid-template-columns:1fr !important;}
+}
+
   </style>
 </head>
 <body>
