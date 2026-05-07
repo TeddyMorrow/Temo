@@ -277,6 +277,38 @@
   #home .games{grid-template-columns:1fr !important;}
 }
 
+
+/* =========================================================
+   TEMIDO POLISH UPDATE - app feel, particles, glow, activity
+   ========================================================= */
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-8;background-image:linear-gradient(rgba(0,174,239,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(0,174,239,.055) 1px,transparent 1px);background-size:46px 46px;animation:temidoGridDrift 18s linear infinite;mask-image:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.08));}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.055) 0 1px,transparent 1px 5px);opacity:.14;mix-blend-mode:multiply;}
+@keyframes temidoGridDrift{from{background-position:0 0,0 0}to{background-position:46px 46px,46px 46px}}
+.page-bg:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.42),transparent 18%),radial-gradient(circle at 12% 30%,rgba(249,168,212,.28),transparent 24%),radial-gradient(circle at 82% 70%,rgba(34,197,94,.22),transparent 24%);animation:temidoBlob 12s ease-in-out infinite alternate;}
+@keyframes temidoBlob{0%{filter:hue-rotate(0deg);transform:scale(1)}100%{filter:hue-rotate(18deg);transform:scale(1.04)}}
+.game,.card,.btn,.pill{will-change:transform;}
+#home .game{position:relative;}
+#home .game:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 0 rgba(0,174,239,0);transition:.2s;pointer-events:none;}
+#home .game:hover:after{box-shadow:inset 0 0 0 4px rgba(0,174,239,.12),0 0 22px rgba(0,174,239,.20);}
+#home .game:active{transform:translateY(1px) scale(.99)!important;}
+.temido-particle{position:fixed;width:9px;height:9px;border:2px solid #171717;border-radius:50%;background:#fde047;pointer-events:none;z-index:700;box-shadow:2px 2px 0 #171717;}
+.launch-wipe{position:fixed;inset:0;z-index:650;pointer-events:none;background:radial-gradient(circle at 50% 45%,rgba(253,224,71,.92),rgba(0,174,239,.88) 36%,rgba(23,23,23,.96) 72%);transform:scale(0);border-radius:50%;opacity:0;}
+.launch-wipe.show{animation:launchWipe .58s ease both;}
+@keyframes launchWipe{0%{transform:scale(0);opacity:0}30%{opacity:1}70%{transform:scale(2.8);opacity:1}100%{transform:scale(4.4);opacity:0}}
+.live-panel{max-width:1180px;margin:8px auto 18px;padding:0 18px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
+.live-pill,.feed-pill{background:#fff;border:3px solid #171717;border-radius:999px;padding:9px 13px;font-weight:900;box-shadow:4px 4px 0 #171717;font-size:13px;}
+.live-dot{display:inline-block;width:9px;height:9px;background:#22c55e;border:2px solid #171717;border-radius:50%;margin-right:6px;animation:livePulse 1.2s infinite;}
+@keyframes livePulse{50%{transform:scale(1.35);background:#fde047}}
+.feed-pill{max-width:min(92vw,520px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:#fef9c3;}
+.toast-stack{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:900;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.temido-toast{background:#fff;border:4px solid #171717;border-radius:18px;padding:10px 14px;font-weight:900;box-shadow:5px 5px 0 #171717;animation:toastIn 3.1s ease both;max-width:90vw;text-align:center;}
+@keyframes toastIn{0%{opacity:0;transform:translateY(-18px) scale(.85)}10%,84%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-10px) scale(.92)}}
+.control-card{margin-top:10px;padding:10px;border:3px solid #171717;border-radius:16px;background:#fef9c3;font-weight:900;font-size:13px;line-height:1.25;}
+body.playing-game #gameScreen{animation:screenIn .22s ease both;}
+@keyframes screenIn{from{opacity:.2;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:760px){.live-panel{margin-top:4px;padding:0 10px}.live-pill,.feed-pill{font-size:11px;padding:7px 10px;border-width:2px;box-shadow:3px 3px 0 #171717}.toast-stack{top:8px}.temido-toast{font-size:12px;border-width:3px;border-radius:14px}.control-card{font-size:11px}.screen{min-height:100dvh}.layout{align-items:center}}
+
+
   </style>
 </head>
 <body>
@@ -1372,6 +1404,192 @@ function loop(ts){
   }
   requestAnimationFrame(loop);
 }
+
+
+/* =========================================================
+   TEMIDO POLISH UPDATE - sound, activity, swipe run, particles
+   ========================================================= */
+(function(){
+  const root = document.documentElement;
+  window.addEventListener('pointermove',function(e){
+    root.style.setProperty('--mx', (e.clientX/window.innerWidth*100).toFixed(1)+'%');
+    root.style.setProperty('--my', (e.clientY/window.innerHeight*100).toFixed(1)+'%');
+  },{passive:true});
+
+  const wipe=document.createElement('div');
+  wipe.className='launch-wipe';
+  document.body.appendChild(wipe);
+  const toastStack=document.createElement('div');
+  toastStack.className='toast-stack';
+  document.body.appendChild(toastStack);
+
+  window.temidoToast=function(msg){
+    const t=document.createElement('div');
+    t.className='temido-toast';
+    t.textContent=msg;
+    toastStack.appendChild(t);
+    setTimeout(function(){t.remove();},3200);
+  };
+
+  function burstAt(x,y,count,col){
+    const colors=[col||'#fde047','#00aeef','#f9a8d4','#22c55e','#fb923c','#67e8f9'];
+    for(let i=0;i<count;i++){
+      const p=document.createElement('div');
+      p.className='temido-particle';
+      p.style.left=x+'px';p.style.top=y+'px';p.style.background=colors[i%colors.length];
+      document.body.appendChild(p);
+      const a=Math.random()*Math.PI*2,d=30+Math.random()*90;
+      p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+Math.cos(a)*d+'px,'+Math.sin(a)*d+'px) scale(.1)',opacity:0}],{duration:650+Math.random()*450,easing:'cubic-bezier(.16,.8,.24,1)'});
+      setTimeout(function(){p.remove();},1150);
+    }
+  }
+  window.temidoBurst=burstAt;
+  document.addEventListener('pointerdown',function(e){
+    if(e.target.closest('.game,.btn,.pill,.theme-btn,.play')) burstAt(e.clientX,e.clientY,10,'#fde047');
+  },{passive:true});
+
+  // WebAudio sound engine - unlocked by first tap/click. No external files needed.
+  let audioCtx=null, master=null, musicOsc=null, musicGain=null, audioReady=false;
+  function ensureAudio(){
+    if(audioReady) return;
+    try{
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      master=audioCtx.createGain();master.gain.value=.14;master.connect(audioCtx.destination);
+      audioReady=true;
+      startMusic();
+      temidoToast('Sound unlocked 🔊');
+    }catch(e){}
+  }
+  function tone(freq,dur,type,vol,slide){
+    if(!audioReady||!audioCtx) return;
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type||'square'; o.frequency.value=freq;
+    if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(40,slide),audioCtx.currentTime+dur);
+    g.gain.setValueAtTime(vol||.12,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(master);o.start();o.stop(audioCtx.currentTime+dur);
+  }
+  function noise(dur,vol){
+    if(!audioReady||!audioCtx) return;
+    const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);
+    const data=buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);
+    const src=audioCtx.createBufferSource();src.buffer=buffer;
+    const g=audioCtx.createGain();g.gain.value=vol||.08;src.connect(g);g.connect(master);src.start();
+  }
+  function startMusic(){
+    if(!audioReady||musicOsc) return;
+    musicOsc=audioCtx.createOscillator(); musicGain=audioCtx.createGain();
+    musicOsc.type='triangle'; musicOsc.frequency.value=110; musicGain.gain.value=.018;
+    musicOsc.connect(musicGain); musicGain.connect(master); musicOsc.start();
+    let notes=[110,146.8,164.8,196,220,196,164.8,146.8],i=0;
+    setInterval(function(){if(!audioCtx||paused) return; musicOsc.frequency.setTargetAtTime(notes[i++%notes.length],audioCtx.currentTime,.04);},420);
+  }
+  document.addEventListener('pointerdown',ensureAudio,{once:false,passive:true});
+  sfx.click=function(){ensureAudio();tone(340,.055,'square',.08,520);};
+  sfx.jump=function(){ensureAudio();tone(220,.13,'triangle',.12,520);};
+  sfx.coin=function(){ensureAudio();tone(740,.07,'square',.09,1050);setTimeout(function(){tone(980,.08,'square',.06,1320);},55);};
+  sfx.bad=function(){ensureAudio();noise(.16,.12);tone(150,.18,'sawtooth',.11,70);};
+  sfx.win=function(){ensureAudio();tone(520,.09,'square',.08,780);setTimeout(function(){tone(780,.11,'square',.07,1040);},85);};
+
+  // Live Roblox-style activity without accounts/XP.
+  const live=document.createElement('div');live.className='live-panel';
+  live.innerHTML='<div class="live-pill"><span class="live-dot"></span><span id="onlineNow">1284</span> playing now</div><div class="feed-pill" id="liveFeed">Timi is warming up the arcade...</div>';
+  const stats=document.querySelector('.stats'); if(stats&&stats.parentNode) stats.parentNode.insertBefore(live,stats.nextSibling);
+  const names=['Ryan','Teddy','Minnie','Dot','Buzz','PixelFox','BlueTimi','ArcadeKid','SkyPro','BlockBoss','NeonCat','FastFinn'];
+  const acts=['joined Temido Run','beat Sky Bounce','found a secret','is playing Block Rush','nearly escaped Ryan','hit NEW BEST','opened glitch mode','started Wave Rider','survived Laser Dodge'];
+  setInterval(function(){
+    const online=$('onlineNow'), feed=$('liveFeed');
+    if(online) online.textContent=String(1160+Math.floor(Math.random()*320));
+    if(feed) feed.textContent=names[Math.floor(Math.random()*names.length)]+' '+acts[Math.floor(Math.random()*acts.length)];
+  },3500);
+
+  // Wrap openGame/backHome for app-like launch transition.
+  const oldOpen=window.openGame;
+  window.openGame=function(g){
+    wipe.classList.remove('show'); void wipe.offsetWidth; wipe.classList.add('show');
+    document.body.classList.add('playing-game');
+    sfx.click();
+    setTimeout(function(){oldOpen(g); if(g==='run') temidoToast('Swipe left/right, up to jump, down to slide');},110);
+  };
+  const oldBack=window.backHome;
+  window.backHome=function(ev){document.body.classList.remove('playing-game');oldBack(ev);};
+
+  // Add simple control hint to panel.
+  const panel=document.querySelector('.panel');
+  if(panel){
+    const hint=document.createElement('div');
+    hint.className='control-card';
+    hint.textContent='Mobile: swipe. Keyboard: arrows/WASD/space. P pauses.';
+    panel.appendChild(hint);
+  }
+
+  // Upgrade Temido Run only: jump, slide, Ryan chase, swipe + keyboard, better physics.
+  reset.run=function(){
+    run={started:false,over:false,character:+(localStorage.temidoRunner||0),lane:1,x:200,score:0,coins:0,speed:3.6,frame:0,obs:[],best:+(localStorage.best_run||0),boost:0,jump:0,jumpV:0,slide:0,ryan:64,combo:0,warn:0,near:0};
+  };
+  function runJump(){if(current==='run'&&run.started&&!run.over&&run.jump<=0){run.jumpV=10.5;sfx.jump(); if(navigator.vibrate) navigator.vibrate(18);}}
+  function runSlide(){if(current==='run'&&run.started&&!run.over){run.slide=34;sfx.click(); if(navigator.vibrate) navigator.vibrate(12);}}
+  function runLeft(){if(current==='run'&&run.started&&!run.over){run.lane=Math.max(0,run.lane-1);sfx.click();}}
+  function runRight(){if(current==='run'&&run.started&&!run.over){run.lane=Math.min(2,run.lane+1);sfx.click();}}
+  window.temidoRunJump=runJump; window.temidoRunSlide=runSlide;
+  draw.run=function(){
+    gradientBg('#bff3ff','#fff7cc');
+    for(let i=0;i<5;i++) drawCloud((i*95-run.frame*.35)%500-70,70+i*28,.65+(i%2)*.25);
+    ctx.fillStyle='#93c5fd';
+    for(let i=0;i<10;i++){const x=(i*48-run.frame*.18)%500-60,h=45+(i%4)*18;rr(x,238-h,34,h,4);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fde047';for(let w=0;w<3;w++)ctx.fillRect(x+8+(w%2)*12,245-h+w*13,5,5);ctx.fillStyle='#93c5fd';}
+    ctx.fillStyle='#86efac';ctx.fillRect(0,430,400,170);ctx.strokeStyle='#171717';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,430);ctx.lineTo(400,430);ctx.stroke();
+    ctx.fillStyle='#525252';ctx.beginPath();ctx.moveTo(55,600);ctx.lineTo(168,150);ctx.lineTo(232,150);ctx.lineTo(345,600);ctx.closePath();ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=5;ctx.stroke();
+    ctx.strokeStyle='#fde047';ctx.lineWidth=4;ctx.setLineDash([20,18]);ctx.lineDashOffset=-run.frame*run.speed;[150,250].forEach(function(x){ctx.beginPath();ctx.moveTo(200,150);ctx.lineTo(x,600);ctx.stroke();});ctx.setLineDash([]);
+    if(!run.started){
+      text('TEMIDO RUN',200,92,36);text('Ryan is IT. Do not get tagged.',200,132,16,'#44403c',900);text('Swipe / arrows • jump • slide',200,158,14,'#44403c',900);
+      runners.forEach(function(r,i){const x=85+i*115;ctx.fillStyle=run.character===i?'#fde047':'#fff';rr(x-43,190,86,118,18);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=4;ctx.stroke();drawTinyRunner(x,255,.72,r,run.frame);text(r.name,x,299,14);if(run.character===i)drawSpark(x+34,204,'#00aeef',8);});
+      btn(95,350,210,58,'START','#00aeef');text('Best '+run.best,200,455,18);return;
+    }
+    if(!paused&&!run.over){
+      run.frame++;run.score+=.09;run.speed=Math.min(12,3.9+run.score/75)+(run.boost>0?2.5:0);if(run.boost>0)run.boost--;
+      if(run.jump>0||run.jumpV>0){run.jump+=run.jumpV;run.jumpV-=.72;if(run.jump<0){run.jump=0;run.jumpV=0;}}
+      if(run.slide>0)run.slide--;
+      const every=Math.max(24,62-run.speed*4|0);
+      if(run.frame%every===0){const types=['van','barrier','sign','coin','boost'];const r=Math.random();const type=r<.40?'van':r<.62?'barrier':r<.78?'sign':r<.92?'coin':'boost';run.obs.push({lane:Math.floor(Math.random()*3),y:-70,type:type,hit:false,color:['#00aeef','#2563eb','#fb923c','#f472b6'][Math.floor(Math.random()*4)]});}
+      run.obs.forEach(o=>o.y+=run.speed);run.obs=run.obs.filter(o=>o.y<680&&!o.hit);run.x+=(laneX(run.lane)-run.x)*.28;
+      run.ryan+=(run.over?0:(run.warn?0.04:-0.01)); run.ryan=Math.max(38,Math.min(82,run.ryan));
+      run.obs.forEach(function(o){if(o.hit)return;const ox=laneX(o.lane),dy=o.y;const same=Math.abs(ox-run.x)<42&&dy>430&&dy<540;if(!same)return;
+        if(o.type==='coin'){o.hit=true;run.coins++;run.score+=10;run.combo++;sfx.coin(); if(run.combo%5===0)temidoToast('Combo x'+run.combo+' 🔥');return;}
+        if(o.type==='boost'){o.hit=true;run.boost=230;run.score+=20;run.combo++;sfx.win();temidoToast('BOOST!');return;}
+        if(o.type==='barrier'&&run.jump>28){run.score+=4;run.near++;o.hit=true;sfx.coin();return;}
+        if(o.type==='sign'&&run.slide>0){run.score+=4;run.near++;o.hit=true;sfx.coin();return;}
+        run.over=true;run.combo=0;sfx.bad();shake();saveBest('run',Math.floor(run.score));
+      });
+    }
+    // Ryan chase shadow/player behind
+    ctx.save();ctx.globalAlpha=.9;drawTinyRunner(200,560,.55,{body:'#ef4444',hat:'#111827'},run.frame+8);text('RYAN',200,594,11,'#171717',900);ctx.restore();
+    run.obs.forEach(function(o){const ox=laneX(o.lane),sc=.55+o.y/650;if(o.type==='coin')drawMiniCoin(ox,o.y,18*sc,'S');else if(o.type==='boost'){ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(ox,o.y,20*sc,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=3;ctx.stroke();text('⚡',ox,o.y+1,18*sc);}else if(o.type==='barrier'){ctx.fillStyle='#fde047';rr(ox-38*sc,o.y-8*sc,76*sc,30*sc,8);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=4;ctx.stroke();text('JUMP',ox,o.y+7*sc,11*sc,'#171717',900);}else if(o.type==='sign'){ctx.fillStyle='#f472b6';rr(ox-45*sc,o.y-52*sc,90*sc,30*sc,8);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=4;ctx.stroke();text('SLIDE',ox,o.y-37*sc,11*sc,'#fff',900);ctx.beginPath();ctx.moveTo(ox,o.y-22*sc);ctx.lineTo(ox,o.y+34*sc);ctx.stroke();}else{ctx.fillStyle='rgba(0,0,0,.18)';ctx.beginPath();ctx.ellipse(ox,o.y+36*sc,42*sc,12*sc,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=o.color;rr(ox-38*sc,o.y-35*sc,76*sc,70*sc,12);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';rr(ox-24*sc,o.y-22*sc,48*sc,22*sc,5);ctx.fill();ctx.stroke();text('ST',ox,o.y+12*sc,12*sc,'#fff');}});
+    drawTinyRunner(run.x,485-run.jump,run.slide>0?.62:.82,runners[run.character],run.frame);
+    if(run.slide>0){ctx.fillStyle='rgba(0,174,239,.18)';rr(run.x-42,505,84,12,8);ctx.fill();}
+    ctx.fillStyle='#fff';rr(10,12,380,46,16);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=3;ctx.stroke();
+    text('Score '+Math.floor(run.score),67,35,14);text('Coins '+run.coins,158,35,14);text('Best '+Math.max(run.best,Math.floor(run.score)),257,35,14);text('Ryan '+Math.round(run.ryan)+'m',344,35,13,'#ef4444',900);
+    if(run.boost>0){ctx.fillStyle='#22c55e';rr(120,62,160,18,9);ctx.fill();ctx.strokeStyle='#171717';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fde047';rr(122,64,(run.boost/230)*156,14,7);ctx.fill();text('BOOST',200,71,10,'#171717',900);}
+    drawPauseHint();
+    if(run.over){ctx.fillStyle='rgba(255,255,255,.93)';ctx.fillRect(0,0,400,600);text('TAGGED!',200,190,45,'#ef4444');drawTinyRunner(165,275,.75,runners[run.character],run.frame);drawTinyRunner(235,285,.62,{body:'#ef4444',hat:'#111827'},run.frame+8);text('Score '+Math.floor(run.score),200,355,25);text('Swipe / arrows to escape next time',200,388,14,'#44403c',900);btn(95,425,210,58,'RUN AGAIN','#67e8f9');}
+  };
+
+  let sx=0,sy=0,st=0;
+  canvas.addEventListener('touchstart',function(e){if(!e.touches[0])return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now();},{passive:true});
+  canvas.addEventListener('touchend',function(e){
+    if(current!=='run'||!run.started||run.over||paused) return;
+    const t=e.changedTouches[0]; if(!t)return; const dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<28) {runJump();return;}
+    if(Math.abs(dx)>Math.abs(dy)){dx<0?runLeft():runRight();}else{dy<0?runJump():runSlide();}
+  },{passive:true});
+  document.addEventListener('keydown',function(e){
+    if(paused||current!=='run'||!run.started||run.over) return;
+    if(['ArrowUp','KeyW','Space'].includes(e.code)){e.preventDefault();runJump();}
+    if(['ArrowDown','KeyS'].includes(e.code)){e.preventDefault();runSlide();}
+    if(e.code==='KeyA')runLeft(); if(e.code==='KeyD')runRight();
+  });
+})();
+
 applyTheme(currentTheme);
 runSelfTests();
 setupScrollReveal();
