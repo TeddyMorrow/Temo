@@ -293,11 +293,11 @@ body.game-shake{animation:bodyShake .22s linear}@keyframes bodyShake{25%{transfo
   <div class="page-bg"></div>
   <div id="home">
     <div class="top">
-      <div class="brand"><div class="logo" title="Temido" onmouseenter="burstTemidos(event)" onclick="toggleThemeMenu(event);openLogoCabinet(event);burstTemidos(event)">T<div class="logo-cabinet" id="logoCabinet"><div class="cabinet-inside"><div class="cabinet-screen"></div><div class="cabinet-temido"></div><div class="cabinet-hands"></div><div class="cabinet-buttons"><span></span><span></span><span></span></div></div><div class="cabinet-door">T</div></div></div><div><h2>Temido</h2><div class="tagline">Arcade Chaos • Play fast • Beat scores</div></div></div>
+      <div class="brand"><div class="logo" title="Temido" onclick="toggleThemeMenu(event);openLogoCabinet(event)">T<div class="logo-cabinet" id="logoCabinet"><div class="cabinet-inside"><div class="cabinet-screen"></div><div class="cabinet-temido"></div><div class="cabinet-hands"></div><div class="cabinet-buttons"><span></span><span></span><span></span></div></div><div class="cabinet-door">T</div></div></div><div><h2>Temido</h2><div class="tagline">Arcade Chaos • Play fast • Beat scores</div></div></div>
       <div><span class="pill" id="welcome" onclick="changeUser()" title="">Welcome</span></div><div class="theme-menu" id="themeMenu"><div class="theme-title">Choose colour mode</div><div class="theme-list"><div class="theme-btn theme-blue" onclick="setTheme('blue')">Blue</div><div class="theme-btn theme-pink" onclick="setTheme('pink')">Pink</div><div class="theme-btn theme-green" onclick="setTheme('green')">Green</div><div class="theme-btn theme-yellow" onclick="setTheme('yellow')">Yellow</div><div class="theme-btn theme-white" onclick="setTheme('white')">White</div><div class="theme-btn theme-black" onclick="setTheme('black')">Black</div></div></div>
     </div>
     <section class="hero"><h1 class="hero-title" aria-label="TEMIDO"><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="burstLetterTemidos(event)">T</span><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="burstLetterTemidos(event)">E</span><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="burstLetterTemidos(event)">M</span><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="burstLetterTemidos(event)">I</span><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="burstLetterTemidos(event)">D</span><span class="hero-letter" onmouseenter="burstLetterTemidos(event)" onclick="tapSecretO(event)">O</span></h1><br><button class="btn pink" onclick="document.querySelector('.games').scrollIntoView({behavior:'smooth'})">Play something</button></section>
-    <div class="stats reveal"><div class="card"><span class="stat-icon game-count"></span><b>13</b>Games</div><div class="card"><span class="stat-icon trophy-shape"></span><b id="topScore">0</b>Top score</div><div class="card"><span class="stat-icon bolt-shape"></span><b id="plays">0</b>Plays</div></div>
+    <div class="stats reveal"><div class="card"><span class="stat-icon game-count"></span><b>14</b>Games</div><div class="card"><span class="stat-icon trophy-shape"></span><b id="peoplePlaying">3,842</b>People playing</div><div class="card"><span class="stat-icon bolt-shape"></span><b id="plays">0</b>Plays</div></div>
     <h2 class="section reveal">Games</h2>
     <div class="games">
       <div class="game run reveal" onclick="openGame('run')"><div class="icon"><span class="mini-art"><svg viewBox="0 0 64 64"><defs><linearGradient id="runG" x1="0" x2="1"><stop offset="0" stop-color="#00aeef"/><stop offset="1" stop-color="#fde047"/></linearGradient></defs><rect x="6" y="8" width="52" height="48" rx="16" fill="url(#runG)" stroke="#171717" stroke-width="4"/><path d="M12 45 C24 34 40 56 54 35" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="27" cy="29" r="13" fill="#fde047" stroke="#171717" stroke-width="4"/><circle cx="23" cy="27" r="2.5" fill="#171717"/><circle cx="31" cy="27" r="2.5" fill="#171717"/><path d="M23 34 Q27 38 33 34" fill="none" stroke="#171717" stroke-width="3" stroke-linecap="round"/><path d="M18 42 L9 51 M35 42 L47 51 M15 31 L7 25 M39 31 L52 24" stroke="#171717" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="17" r="7" fill="#fff" stroke="#171717" stroke-width="3"/><path d="M47 17 H53" stroke="#00aeef" stroke-width="3" stroke-linecap="round"/></svg></span></div><h2>Temido Run</h2><p>Ryan-style tag runner with traffic, coins, boosts, and faster city action.</p><span class="play">PLAY</span></div>
@@ -366,20 +366,36 @@ function temidoTalk(){
 function updateUI(){
   const welcomeEl = $('welcome');
   const playsEl = $('plays');
-  const topScoreEl = $('topScore');
   if(welcomeEl) welcomeEl.innerHTML = user ? 'Hi, ' + esc(user) : 'Welcome';
   if(playsEl) playsEl.textContent = plays;
-  if(topScoreEl){
-    const keys = ['run','sky','block','tap','aim','memory','circle','dodge','stack','wave','orbit','colour','reflex','quiz'];
-    const bests = keys.map(function(k){ return +(localStorage['best_' + k] || 0); });
-    topScoreEl.textContent = Math.max.apply(null, bests);
+  updatePeoplePlaying();
+}
+let fakePeoplePlaying = +(localStorage.temidoFakePeoplePlaying || 0);
+if(!fakePeoplePlaying){
+  fakePeoplePlaying = 2800 + Math.floor(Math.random() * 5400);
+  localStorage.temidoFakePeoplePlaying = fakePeoplePlaying;
+}
+function updatePeoplePlaying(){
+  const el = $('peoplePlaying');
+  if(!el) return;
+  el.textContent = fakePeoplePlaying.toLocaleString();
+}
+function wigglePeoplePlaying(){
+  fakePeoplePlaying += Math.floor(Math.random() * 91) - 32;
+  fakePeoplePlaying = Math.max(1900, Math.min(9999, fakePeoplePlaying));
+  localStorage.temidoFakePeoplePlaying = fakePeoplePlaying;
+  updatePeoplePlaying();
+  const el = $('peoplePlaying');
+  if(el && el.animate){
+    el.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
   }
 }
+setInterval(wigglePeoplePlaying, 1800);
 const helperLines = [
   'Change the colour in the T in the top left 🎨',
   'Sky Bounce hard mode is wild.',
   'Tip: in Temido Run, tap left or right to switch lanes.',
-  'Click the T logo. Tiny Temidos may escape.',
+  'Hover the big TEMIDO word to make colourful jetpack Temidos fly out.',
   'Beat your top score and I’ll pretend to be impressed.',
   'Use the pause button anytime.',
   'Temido Run is now 3D. Swipe lanes and grab boost pads.',
