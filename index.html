@@ -283,7 +283,7 @@ body.game-shake{animation:bodyShake .22s linear}@keyframes bodyShake{25%{transfo
 .game::after{content:"";position:absolute;inset:-60%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.34) 50%,transparent 65%);transform:translateX(-65%) rotate(8deg);transition:.45s;pointer-events:none}.game:hover::after{transform:translateX(65%) rotate(8deg)}
 #home .quiz .icon{background:linear-gradient(135deg,#fff7ed,#fb923c,#fde047)!important}
 .logo{isolation:isolate}.logo:after{content:"";position:absolute;inset:-12px;border-radius:22px;background:radial-gradient(circle,rgba(253,224,71,.38),rgba(0,174,239,.18),transparent 68%);opacity:0;transform:scale(.55);z-index:-1;transition:.18s;pointer-events:none}.logo:hover:after{opacity:1;transform:scale(1.25);animation:logoGlowPulse .7s ease-in-out infinite alternate}@keyframes logoGlowPulse{from{filter:blur(0)}to{filter:blur(4px)}}
-.temido-pop.logo-swarm{z-index:240;filter:drop-shadow(0 0 8px rgba(0,174,239,.35))}.temido-pop .pop-cheek{position:absolute;top:24px;width:5px;height:4px;background:#f472b6;border-radius:50%;opacity:.75}.temido-pop .pop-cheek.left{left:5px}.temido-pop .pop-cheek.right{right:5px}.temido-pop .pop-star{position:absolute;right:-8px;top:-12px;width:12px;height:12px;background:#fde047;clip-path:polygon(50% 0,62% 34%,98% 35%,69% 56%,79% 91%,50% 70%,21% 91%,31% 56%,2% 35%,38% 34%);filter:drop-shadow(1px 1px 0 #171717);animation:starTwinkle .38s infinite alternate}.temido-pop .pop-scarf{position:absolute;left:24px;top:35px;width:20px;height:8px;background:#ef4444;border:2px solid #171717;border-radius:999px;transform:rotate(-18deg)}.temido-pop .pop-trail{position:absolute;left:50%;top:47px;width:42px;height:12px;background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(103,232,249,.55),transparent);border-radius:999px;transform:translateX(-50%) rotate(90deg);opacity:.8}@keyframes starTwinkle{from{transform:scale(.75) rotate(0deg)}to{transform:scale(1.25) rotate(24deg)}}
+.temido-pop.logo-swarm{z-index:110;opacity:0;filter:drop-shadow(0 0 8px rgba(0,174,239,.35))}.temido-pop .pop-cheek{position:absolute;top:24px;width:5px;height:4px;background:#f472b6;border-radius:50%;opacity:.75}.temido-pop .pop-cheek.left{left:5px}.temido-pop .pop-cheek.right{right:5px}.temido-pop .pop-star{position:absolute;right:-8px;top:-12px;width:12px;height:12px;background:#fde047;clip-path:polygon(50% 0,62% 34%,98% 35%,69% 56%,79% 91%,50% 70%,21% 91%,31% 56%,2% 35%,38% 34%);filter:drop-shadow(1px 1px 0 #171717);animation:starTwinkle .38s infinite alternate}.temido-pop .pop-scarf{position:absolute;left:24px;top:35px;width:20px;height:8px;background:#ef4444;border:2px solid #171717;border-radius:999px;transform:rotate(-18deg)}.temido-pop .pop-trail{position:absolute;left:50%;top:47px;width:42px;height:12px;background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(103,232,249,.55),transparent);border-radius:999px;transform:translateX(-50%) rotate(90deg);opacity:.8}@keyframes starTwinkle{from{transform:scale(.75) rotate(0deg)}to{transform:scale(1.25) rotate(24deg)}}
 @media(max-width:760px){.layout{min-height:100dvh}.wrap{width:100%}#gameScreen .panel{position:relative;z-index:2}canvas{max-height:calc(100dvh - 155px);object-fit:contain}.hero-title{max-width:100%;overflow:hidden}.temido-pop.logo-swarm{transform-origin:center}}
 @media(max-width:420px){#gameScreen{padding-bottom:12px}#gameScreen .panel .btn{font-size:12px;padding:8px 10px}canvas{max-height:calc(100dvh - 145px)}}
 
@@ -482,15 +482,18 @@ function burstTemidos(ev){
     const curveY = Math.sin(angle - .4) * (40 + Math.random()*90) - 70;
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance + 65;
+    const clearX = Math.cos(angle) * 64;
+    const clearY = Math.sin(angle) * 64;
     const exitX = endX + (Math.random() - .5) * 120;
     const exitY = endY + 90 + Math.random() * 110;
     const spin = (Math.random() > .5 ? 1 : -1) * (260 + Math.random() * 620);
     const scale = .72 + Math.random() * .5;
     const duration = 2300 + Math.random() * 1700;
     mini.animate([
-      {transform:'translate(0,0) scale(.22) rotate(0deg)',opacity:0},
-      {transform:'translate('+(curveX*.35)+'px,'+(curveY*.35)+'px) scale('+scale+') rotate('+(spin*.18)+'deg)',opacity:1,offset:.16},
-      {transform:'translate('+curveX+'px,'+curveY+'px) scale('+(scale*1.08)+') rotate('+(spin*.42)+'deg)',opacity:1,offset:.38},
+      {transform:'translate(0,0) scale(.05) rotate(0deg)',opacity:0},
+      {transform:'translate('+clearX+'px,'+clearY+'px) scale(.55) rotate('+(spin*.1)+'deg)',opacity:0,offset:.08},
+      {transform:'translate('+(curveX*.55)+'px,'+(curveY*.55)+'px) scale('+scale+') rotate('+(spin*.18)+'deg)',opacity:1,offset:.18},
+      {transform:'translate('+curveX+'px,'+curveY+'px) scale('+(scale*1.08)+') rotate('+(spin*.42)+'deg)',opacity:1,offset:.40},
       {transform:'translate('+endX+'px,'+endY+'px) scale('+(scale*.82)+') rotate('+(spin*.78)+'deg)',opacity:.95,offset:.76},
       {transform:'translate('+exitX+'px,'+exitY+'px) scale(.12) rotate('+spin+'deg)',opacity:0}
     ],{duration:duration,easing:'cubic-bezier(.16,.84,.22,1)'});
